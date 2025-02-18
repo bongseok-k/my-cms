@@ -1,38 +1,104 @@
-.App {
-  text-align: center;
+/* 공통 설정 */
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: #F9F9F9;
+  color: #333;
+  height: 100%;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+/* 로그인 페이지 */
+.login-container {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #DC143C 0%, #4682B4 100%);
 }
 
-.App-link {
-  color: #61dafb;
+.login-box {
+  background-color: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  padding: 40px;
+  width: 320px;
+  text-align: center;
+  box-shadow: 0 0 30px rgba(0,0,0,0.2);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.site-title {
+  font-size: 2rem;
+  color: #FFFFE0; /* 노랑 포인트 */
+  margin-bottom: 10px;
+  text-shadow: 0 0 5px #FFFFE0;
+}
+
+.domain-text {
+  font-size: 0.9rem;
+  color: #778899; /* 밝은 회색 */
+  margin-bottom: 20px;
+}
+
+.input-field {
+  display: block;
+  width: 100%;
+  margin: 10px 0;
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  outline: none;
+  font-size: 1rem;
+}
+
+.input-field:focus {
+  border-color: #DC143C; /* 빨강 */
+}
+
+.login-button {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  margin-top: 20px;
+  border: none;
+  border-radius: 6px;
+  background-color: #DC143C;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.3s;
+  text-shadow: 0 0 3px rgba(0,0,0,0.3);
+}
+
+.login-button:hover {
+  background-color: #e6002c;
+}
+
+/* 메인 페이지 */
+.main-container {
+  height: 100vh;
+  background: linear-gradient(135deg, #2E8B57 0%, #778899 100%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.main-content {
+  text-align: center;
+  color: #FFFFFF;
+  background-color: rgba(0,0,0,0.2);
+  backdrop-filter: blur(5px);
+  padding: 40px;
+  border-radius: 12px;
+}
+
+.welcome-text {
+  font-size: 2rem;
+  margin-bottom: 20px;
+  text-shadow: 0 0 8px #fff;
+}
+
+.description {
+  font-size: 1rem;
+  line-height: 1.5;
 }
