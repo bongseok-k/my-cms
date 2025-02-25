@@ -1,164 +1,190 @@
 import React, { useState } from 'react';
+import { FaCloudUploadAlt, FaSearch } from 'react-icons/fa';
 import './ContentBuilderPage.css';
 
-function DetailInputPage({ onSaveDetail, onBack }) {
-  const [category, setCategory] = useState("");
+function DetailInputPage({
+  courseTitle = "과목명 없음", // 상단 볼드체로 표시할 과목명(예시)
+  onSaveDetail,
+  onBack
+}) {
+  const [thumbnail, setThumbnail] = useState("");
   const [courseIntro, setCourseIntro] = useState("");
+
+  // 기타 정보들
+  const [category, setCategory] = useState("");
   const [keywords, setKeywords] = useState("");
   const [instructor, setInstructor] = useState("");
-  const [thumbnail, setThumbnail] = useState("");
-  const [previewOption, setPreviewOption] = useState("");
-  const [subtitle, setSubtitle] = useState("");
+  const [sampleLesson, setSampleLesson] = useState(""); // 샘플(차시선택)
   const [difficulty, setDifficulty] = useState("");
-  const [duration, setDuration] = useState("");
+  const [subtitleFile, setSubtitleFile] = useState(""); // 자막 업로드
   const [price, setPrice] = useState("");
-  const [additionalInfo, setAdditionalInfo] = useState("");
 
+  // 저장
   const handleDetailSave = () => {
     onSaveDetail?.({
-      category,
+      thumbnail,
       courseIntro,
+      category,
       keywords,
       instructor,
-      thumbnail,
-      previewOption,
-      subtitle,
+      sampleLesson,
       difficulty,
-      duration,
-      price,
-      additionalInfo
+      subtitleFile,
+      price
     });
   };
 
   return (
     <div className="detail-content">
-      {/* 상단 메뉴/탭/버튼은 ContentBuilderPage에서 유지,
-          여기선 중앙 폼만 보여줌 */}
-      <div className="detail-form-container">
-        <h2 className="detail-title">상세정보 입력</h2>
+      {/* 상단: 과목명 + 구분선 */}
+      <div className="detail-header-row">
+        <h2 className="detail-course-title">{courseTitle}</h2>
+      </div>
+      <hr className="detail-divider" />
 
-        <div className="detail-field">
-          <label>카테고리</label>
-          <input
-            type="text"
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            placeholder="카테고리 입력"
-          />
-        </div>
+      {/* 썸네일 + 과목소개 섹션 */}
+      <div className="detail-top-section">
+        {thumbnail ? (
+          // 썸네일이 있으면 이미지 노출
+          <div className="thumbnail-container">
+            <img
+              src={thumbnail}
+              alt="과목썸네일"
+              className="course-thumbnail"
+            />
+          </div>
+        ) : (
+          // 썸네일이 없으면 업로드/검색 아이콘 노출
+          <div className="thumbnail-placeholder">
+            <FaCloudUploadAlt size={32} style={{ marginRight: '10px' }} />
+            <FaSearch size={32} />
+          </div>
+        )}
 
-        <div className="detail-field">
-          <label>과목 소개</label>
+        <div className="intro-text-container">
+          <label className="intro-label">과정소개</label>
           <textarea
+            className="intro-textarea"
             value={courseIntro}
             onChange={(e) => setCourseIntro(e.target.value)}
-            placeholder="과목 소개 입력"
+            placeholder="과정 소개를 입력하세요"
           />
         </div>
+      </div>
 
-        <div className="detail-field">
-          <label>키워드</label>
-          <input
-            type="text"
-            value={keywords}
-            onChange={(e) => setKeywords(e.target.value)}
-            placeholder="키워드 입력"
-          />
+      <hr className="detail-divider" />
+
+      {/* 아래쪽: 좌측 label(bold), 우측 input 형식의 2열 레이아웃 */}
+      <div className="detail-form-grid">
+        {/* 1) 카테고리 */}
+        <div className="detail-row">
+          <div className="detail-label bold">카테고리</div>
+          <div className="detail-input">
+            <input
+              type="text"
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              placeholder="카테고리 입력"
+            />
+          </div>
         </div>
 
-        <div className="detail-field">
-          <label>강사</label>
-          <input
-            type="text"
-            value={instructor}
-            onChange={(e) => setInstructor(e.target.value)}
-            placeholder="강사 입력"
-          />
+        {/* 2) 키워드 */}
+        <div className="detail-row">
+          <div className="detail-label bold">키워드</div>
+          <div className="detail-input">
+            <input
+              type="text"
+              value={keywords}
+              onChange={(e) => setKeywords(e.target.value)}
+              placeholder="키워드 입력"
+            />
+          </div>
         </div>
 
-        <div className="detail-field">
-          <label>썸네일(URL)</label>
-          <input
-            type="text"
-            value={thumbnail}
-            onChange={(e) => setThumbnail(e.target.value)}
-            placeholder="썸네일 URL 입력"
-          />
+        {/* 3) 강사 */}
+        <div className="detail-row">
+          <div className="detail-label bold">강사</div>
+          <div className="detail-input">
+            <input
+              type="text"
+              value={instructor}
+              onChange={(e) => setInstructor(e.target.value)}
+              placeholder="강사명 입력"
+            />
+          </div>
         </div>
 
-        <div className="detail-field">
-          <label>맛보기 선택</label>
-          <input
-            type="text"
-            value={previewOption}
-            onChange={(e) => setPreviewOption(e.target.value)}
-            placeholder="맛보기 선택 정보 입력"
-          />
+        {/* 4) 샘플(차시선택) */}
+        <div className="detail-row">
+          <div className="detail-label bold">샘플</div>
+          <div className="detail-input">
+            <select
+              value={sampleLesson}
+              onChange={(e) => setSampleLesson(e.target.value)}
+            >
+              <option value="">차시 선택</option>
+              <option value="1차시">1차시</option>
+              <option value="2차시">2차시</option>
+              {/* 필요하면 동적으로 차시 목록 가져오기 */}
+            </select>
+          </div>
         </div>
 
-        <div className="detail-field">
-          <label>자막 기능</label>
-          <input
-            type="text"
-            value={subtitle}
-            onChange={(e) => setSubtitle(e.target.value)}
-            placeholder="자막 관련 정보 입력"
-          />
+        {/* 5) 난이도 (초급, 중급, 고급) */}
+        <div className="detail-row">
+          <div className="detail-label bold">난이도</div>
+          <div className="detail-input">
+            <select
+              value={difficulty}
+              onChange={(e) => setDifficulty(e.target.value)}
+            >
+              <option value="">선택</option>
+              <option value="초급">초급</option>
+              <option value="중급">중급</option>
+              <option value="고급">고급</option>
+            </select>
+          </div>
         </div>
 
-        <div className="detail-field">
-          <label>난이도</label>
-          <input
-            type="text"
-            value={difficulty}
-            onChange={(e) => setDifficulty(e.target.value)}
-            placeholder="예: 초급, 중급, 고급"
-          />
+        {/* 6) 자막 */}
+        <div className="detail-row">
+          <div className="detail-label bold">자막</div>
+          <div className="detail-input">
+            {/* 업로드 버튼 + 라이브러리 검색버튼 (예시) */}
+            <button className="gray-button" style={{ marginRight: '6px' }}>
+              자막 업로드
+            </button>
+            <button className="gray-button">라이브러리 검색</button>
+          </div>
         </div>
 
-        <div className="detail-field">
-          <label>수강 기간</label>
-          <input
-            type="text"
-            value={duration}
-            onChange={(e) => setDuration(e.target.value)}
-            placeholder="수강 기간 입력"
-          />
+        {/* 7) 가격 */}
+        <div className="detail-row">
+          <div className="detail-label bold">가격</div>
+          <div className="detail-input">
+            <input
+              type="text"
+              value={price}
+              onChange={(e) => setPrice(e.target.value)}
+              placeholder="가격 입력"
+            />
+          </div>
         </div>
+      </div>
 
-        <div className="detail-field">
-          <label>가격</label>
-          <input
-            type="text"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-            placeholder="가격 입력"
-          />
-        </div>
-
-        <div className="detail-field">
-          <label>추가 정보</label>
-          <textarea
-            value={additionalInfo}
-            onChange={(e) => setAdditionalInfo(e.target.value)}
-            placeholder="추가 정보 입력"
-          />
-        </div>
-
-        {/* 저장 or 뒤로가기 버튼 (선택적으로 표시)
-            상단 탭에서 이미 '저장' 버튼이 있을 경우, 아래 버튼은 숨겨도 됨 */}
-        <div style={{ textAlign: 'right', marginTop: '10px' }}>
-          <button className="red-button" onClick={handleDetailSave}>
-            저장하기
-          </button>
-          <button 
-            className="red-button"
-            style={{ marginLeft: '8px', backgroundColor: '#aaa' }}
-            onClick={onBack}
-          >
-            뒤로가기
-          </button>
-        </div>
+      {/* 하단 버튼 (저장 / 뒤로가기) */}
+      <div className="detail-button-row">
+        <button className="red-button" onClick={handleDetailSave}>
+          저장
+        </button>
+        <button
+          className="gray-button"
+          style={{ marginLeft: '8px' }}
+          onClick={onBack}
+        >
+          뒤로가기
+        </button>
       </div>
     </div>
   );
