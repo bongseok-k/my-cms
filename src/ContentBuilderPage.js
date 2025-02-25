@@ -54,17 +54,31 @@ function ContentBuilderPage() {
   const [previewItems, setPreviewItems] = useState([]);
   const [isPreviewDragOver, setIsPreviewDragOver] = useState(false);
 
+  // =====================================
+  // [1] Import 모달 상태 + 핸들러
+  // =====================================
+  const [showImportModal, setShowImportModal] = useState(false);
+
+  const handleOpenImportModal = () => setShowImportModal(true);
+  const handleCloseImportModal = () => setShowImportModal(false);
+
+  // 압축파일 업로드 핸들러 (간단 예시)
+  const handleImportFile = (e) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      alert(`압축파일 업로드: ${file.name}`);
+      // TODO: 실제 업로드 로직 or parsing 로직
+      setShowImportModal(false);
+    }
+  };
+
   // ---------------------------
   // 파일 / UI 요소 드래그핸들러
   // ---------------------------
   const handleLibraryDragStart = (e, file) => {
-    // 파일 정보를 JSON에 담아 전송
     e.dataTransfer.setData("application/json", JSON.stringify(file));
   };
-
-  // UI 요소 드래그
   const handleUiElementDragStart = (e, elem) => {
-    // elem = { type: "button", name: "버튼" }, 등등
     e.dataTransfer.setData("application/json", JSON.stringify(elem));
   };
 
@@ -115,11 +129,11 @@ function ContentBuilderPage() {
 
   // 미리보기에서 파일/요소 구분 렌더
   const renderPreviewItem = item => {
-    // 파일인 경우: { name, extension }
     if (item.extension) {
+      // 파일
       return item.name;
     }
-    // UI 요소인 경우: { type, name }
+    // UI 요소
     switch (item.type) {
       case "input":
         return <input placeholder={item.name} style={{ width: "120px" }} />;
@@ -171,7 +185,9 @@ function ContentBuilderPage() {
 
   const handleSaveLesson = () => {
     const newId = lessons.length + 1;
-    const generatedName = newLessonName.trim() ? newLessonName : `${newId}차시`;
+    const generatedName = newLessonName.trim()
+      ? newLessonName
+      : `${newId}차시`;
     const newLesson = {
       id: newId,
       name: generatedName,
@@ -218,7 +234,6 @@ function ContentBuilderPage() {
   // 전체 저장
   // ---------------------------
   const handleSaveAll = () => {
-    // 템플릿 문자열에 backtick(`) 사용
     alert(`전체 저장 되었습니다!\n과목명: ${savedCourseName}`);
   };
 
@@ -226,7 +241,6 @@ function ContentBuilderPage() {
   // 상세 페이지: 저장/뒤로가기
   // ---------------------------
   const handleDetailSave = detailData => {
-    // detailData 처리 (필요 시)
     setView("builder");
     setViewTab("builder");
   };
@@ -253,7 +267,6 @@ function ContentBuilderPage() {
               alt="Company Logo"
               className="company-logo"
             />
-            {/* 과목을 누르면 setView("list")를 호출 */}
             <div className="top-menu-item" onClick={() => setView("list")}>
               과목
             </div>
@@ -318,7 +331,7 @@ function ContentBuilderPage() {
         </div>
       </header>
 
-      {/* 서브헤더: 빌더/상세정보 탭 + 저장 버튼 */}
+      {/* 서브헤더: 빌더/상세정보 탭 + 저장 버튼 + [Import] 버튼 */}
       <div className="sub-header builder-subheader">
         <div className="sub-left builder-tabs">
           <button
@@ -335,11 +348,34 @@ function ContentBuilderPage() {
           </button>
         </div>
         <div className="sub-right">
+          {/* 기존 저장 버튼 */}
           <button className="save-button" onClick={handleSaveAll}>
             저장
           </button>
+
+          {/* [2] Import 버튼 추가 */}
+          <button className="import-button" onClick={handleOpenImportModal}>
+            Import
+          </button>
         </div>
       </div>
+
+      {/* Import 모달 (showImportModal === true 시 표시) */}
+      {showImportModal && (
+        <div className="import-modal-overlay">
+          <div className="import-modal-content">
+            <h3>압축파일 Import</h3>
+            <input
+              type="file"
+              accept=".zip,.rar,.7z"
+              onChange={handleImportFile}
+            />
+            <button className="close-button" onClick={handleCloseImportModal}>
+              닫기
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* 메인 컨테이너: 왼쪽(과목/차시/페이지), 오른쪽(3행 구조) */}
       <div className="builder-main-container">
