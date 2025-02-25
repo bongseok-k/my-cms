@@ -348,14 +348,13 @@ function ContentBuilderPage() {
           </button>
         </div>
         <div className="sub-right">
-          {/* 기존 저장 버튼 */}
-          <button className="save-button" onClick={handleSaveAll}>
-            저장
-          </button>
-
           {/* [2] Import 버튼 추가 */}
           <button className="import-button" onClick={handleOpenImportModal}>
             Import
+          </button>          
+          {/* 기존 저장 버튼 */}
+          <button className="save-button" onClick={handleSaveAll}>
+            저장
           </button>
         </div>
       </div>
