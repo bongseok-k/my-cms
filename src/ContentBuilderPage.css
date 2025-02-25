@@ -1,4 +1,6 @@
-/* 기본 스타일 */
+/* ------------------------------------------------------------------
+   공통 기본 스타일
+------------------------------------------------------------------ */
 .builder-page {
   font-family: Arial, sans-serif;
   height: 100vh;
@@ -7,129 +9,262 @@
   box-sizing: border-box;
 }
 
-/* 상단 대메뉴 (전체 높이의 10%) */
+/* 최상단 메뉴 (로고 + 메뉴 아이템 + 우측 아이콘) */
 .top-menu {
   display: flex;
-  background-color: #2E8B57;
-  color: #fff;
-  height: 10vh;
+  justify-content: space-between;
   align-items: center;
+  height: 60px; /* 고정 높이 60px */
+  background-color: #F42628; /* 빨간색 계열 */
   padding: 0 20px;
   box-sizing: border-box;
 }
+
+/* 좌측 메뉴: 로고 + 메뉴 아이템 */
+.menu-left {
+  display: flex;
+  align-items: center;
+  gap: 20px; /* 로고와 메뉴 아이템 간격 */
+}
+
+/* 로고 */
+.company-logo {
+  height: 40px;  /* 로고 높이 */
+  width: auto;
+}
+
+/* 상단 메뉴 아이템 / 아이콘을 흰색으로 */
 .top-menu-item {
+  color: #fff;
+  font-size: 0.75em;
   margin-right: 20px;
   cursor: pointer;
 }
-
-/* 메인 영역 레이아웃 */
-.main-container {
-  flex: 1;
-  display: flex;
-  overflow: hidden;
-}
-
-/* 좌측 패널: 툴바 (전체 너비의 약 5%, 최소 60px) */
-.left-panel {
-  width: 5%;
-  min-width: 60px;
-  border-right: 1px solid #ccc;
-  padding: 10px;
-  box-sizing: border-box;
-}
-.library-toolbar {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-}
-.toolbar-item {
-  font-size: 24px;
+.icon {
+  color: #fff;
+  font-size: 1.2em;
   cursor: pointer;
 }
 
-/* 우측 패널: 빌더 화면 (나머지 공간) */
-.right-panel {
-  flex: 1;
-  padding: 10px;
-  background-color: #333;
-  color: #fff;
+/* 우측 아이콘 영역 (벨, 유저) */
+.menu-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* library-container: 공통/페이지 라이브러리를 좌우 50%씩 */
+.library-container {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px; /* 라이브러리 아래 여백 */
+}
+.half-library {
+  width: 50%;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  align-items: center;  /* 중앙 정렬 */
+  gap: 10px;
 }
 
-/* 관리 영역 (상단 부분) */
-.management-panel {
-  width: 100%;
-  max-width: 970px;
-  background-color: #fff;
-  color: #333;
-  padding: 10px;
-  margin-bottom: 10px;
+/* ------------------------------------------------------------------
+   서브헤더: 빌더 / 상세정보 탭 + 저장 버튼
+------------------------------------------------------------------ */
+.sub-header.builder-subheader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #f5f5f5;
+  border-bottom: 1px solid #ccc;
+  padding: 0 20px;
+  height: 50px;
   box-sizing: border-box;
 }
-.management-section {
+.builder-tabs {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.tab-btn {
+  background-color: #f5f5f5;
+  border: 1px solid #ccc;
+  border-bottom: none;
+  padding: 8px 15px;
+  cursor: pointer;
+  font-size: 1em;
+  margin-right: 2px;
+  border-radius: 4px 4px 0 0;
+}
+.tab-btn:hover {
+  background-color: #e0e0e0;
+}
+.tab-btn.active {
+  background-color: #fff;
+  border-bottom: 1px solid #fff;
+  font-weight: bold;
+}
+.sub-right {
+  display: flex;
+  align-items: center;
+}
+.save-button {
+  background-color: #DC143C; /* 레드 계열 */
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 1em;
+  padding: 5px 15px;
+  cursor: pointer;
+}
+
+/* ------------------------------------------------------------------
+   메인 컨테이너: 왼쪽(과목/차시/페이지), 오른쪽(라이브러리+프리뷰)
+------------------------------------------------------------------ */
+.builder-main-container {
+  flex: 1;
+  display: flex;
+  overflow: hidden; /* 필요 시 스크롤 */
+}
+
+/* 왼쪽 영역: 과목/차시/페이지 */
+.builder-left-side {
+  width: 30%;
+  min-width: 320px;
+  border-right: 1px solid #ccc;
+  padding: 10px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+}
+
+
+/* ------------------------------------------------------------------
+   왼쪽 영역: 과목/차시/페이지 입력, 저장버튼, 목록
+------------------------------------------------------------------ */
+/* 입력/저장 패널 */
+.management-panel {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px;
+  box-sizing: border-box;
+}
+.management-panel.single-line {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   margin-bottom: 10px;
 }
 .section-label {
   font-weight: bold;
-  margin-bottom: 5px;
-  display: block;
-}
-.management-row {
-  display: flex;
-  gap: 10px;
-  align-items: center;
+  min-width: 60px;
 }
 .management-input {
-  width: 150px; /* 입력창 크기 축소 */
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 0.9em;
+}
+.management-input.long-input {
+  width: 200px;
+}
+.red-button {
+  background-color: #DC143C; 
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.9em;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+/* saved-info-panel */
+.saved-info-panel {
+  margin-top: 10px;
+}
+.saved-course-name {
+  font-size: 1em;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+.saved-lessons .saved-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+.saved-lessons label {
+  min-width: 40px;
+}
+.tabs-container {
+  display: flex;
+  gap: 5px;
+  margin-left: 10px;
+}
+.tab-button {
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.9em;
+  background-color: #f9f9f9;
+  cursor: pointer;
+}
+.tab-button.active {
+  background-color: #2E8B57;
+  color: #fff;
+  border-color: #2E8B57;
+}
+
+/* ------------------------------------------------------------------
+   오른쪽 영역: 라이브러리 섹션 (공통/페이지) + 프리뷰
+------------------------------------------------------------------ */
+/* 라이브러리 섹션 */
+.library-section {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+.section-header {
+  font-weight: bold;
+  margin-bottom: 5px;
+  text-align: center;
+}
+.search-row {
+  display: flex;
+  gap: 5px;
+  margin-bottom: 5px;
+}
+.search-input {
+  flex: 1;
   padding: 5px;
   border: 1px solid #ccc;
   border-radius: 4px;
   box-sizing: border-box;
+  font-size: 0.9em;
 }
-.management-save-button {
+.search-button {
   padding: 5px 10px;
   border: none;
   border-radius: 4px;
   background-color: #2E8B57;
   color: #fff;
   cursor: pointer;
+  font-size: 0.9em;
 }
-.tabs-container {
-  display: flex;
-  gap: 5px;
-  flex-wrap: wrap;
-}
-.tab-button {
-  padding: 5px 10px;
-  background-color: #eee;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  cursor: pointer;
-}
-.tab-button.active {
-  background-color: #2E8B57;
-  color: #fff;
-}
-.delete-icon {
-  margin-left: 5px;
-  cursor: pointer;
-}
-
-/* 라이브러리 업로드 영역 */
-.library-upload-area {
-  width: 100%;
-  max-width: 970px;
+.upload-area {
   background-color: #fff;
   color: #333;
   padding: 10px;
-  margin-bottom: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  box-sizing: border-box;
+  text-align: center;
+  font-size: 0.9em;
+  margin-bottom: 10px;
 }
 .upload-button {
   color: #2E8B57;
@@ -140,7 +275,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 5px;
-  margin-top: 10px;
+  margin-top: 5px;
 }
 .file-tag {
   padding: 5px;
@@ -151,6 +286,7 @@
   align-items: center;
   border-radius: 4px;
   box-sizing: border-box;
+  font-size: 0.9em;
 }
 .file-tag:hover {
   background-color: #e0e0e0;
@@ -160,15 +296,23 @@
   color: #2E8B57;
 }
 
-/* 미리보기 영역: 기본 크기를 970x546 (16:9 비율) */
-.preview-area {
-  width: 970px;
-  height: 546px;
+/* 미리보기 섹션 */
+.preview-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
   background-color: #000;
-  border: 2px dashed #fff;
-  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-top: 5px;
+  overflow: hidden;
+}
+.preview-area {
   position: relative;
-  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  border: 2px dashed #fff;
+  background-color: #000;
 }
 .preview-area.drag-over {
   border: 2px dashed #ff0;
@@ -181,13 +325,6 @@
   color: #ccc;
   text-align: center;
 }
-.preview-content {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
 .preview-item {
   position: absolute;
   padding: 5px 10px;
@@ -197,20 +334,124 @@
   cursor: move;
   border-radius: 4px;
   box-sizing: border-box;
+  font-size: 0.9em;
 }
 
-/* 전체 저장 버튼 */
-.global-save {
-  width: 100%;
-  max-width: 970px;
-  text-align: right;
-  margin-top: 10px;
+/* 상세 입력 페이지 (DetailInputPage) */
+.detail-page {
+  padding: 20px;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
-.global-save-button {
-  padding: 8px 16px;
+.detail-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #2E8B57;
+  color: #fff;
+  padding: 10px 20px;
+  font-size: 1.5em;
+  margin-bottom: 20px;
+}
+.detail-menu {
+  display: flex;
+  gap: 20px;
+}
+.detail-actions {
+  display: flex;
+  gap: 10px;
+}
+.top-save-button {
+  background-color: #DC143C;
   border: none;
   border-radius: 4px;
-  background-color: #DC143C;
-  color: #fff;
+  padding: 5px 10px;
   cursor: pointer;
+  font-size: 1.5em;
+  color: #fff;
+}
+.back-button {
+  background-color: #2E8B57;
+  border: none;
+  border-radius: 4px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 1.5em;
+  color: #fff;
+}
+.detail-form {
+  flex: 1;
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.detail-field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.detail-field label {
+  font-weight: bold;
+  font-size: 1.2em;
+}
+.detail-field input,
+.detail-field textarea {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1em;
+  box-sizing: border-box;
+}
+
+/* 예: UI 요소 라이브러리(새로운 .ui-library-section 등) */
+.ui-library-section {
+  margin-top: 10px;
+}
+.ui-elements-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.ui-element-tag {
+  padding: 5px 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f2f2f2;
+  cursor: move;
+  font-size: 0.9em;
+}
+.ui-element-tag:hover {
+  background-color: #e0e0e0;
+}
+
+.builder-right-side {
+  display: flex;           /* 세로로 3행 (Row1, Row2, Row3) */
+  flex-direction: column;
+  gap: 10px;               /* 행 간 간격 */
+  flex: 1;
+}
+
+/* 한 줄(행)을 나타내는 컨테이너 */
+.row-libraries {
+  display: flex;           /* 가로 배치 */
+  width: 100%;
+  box-sizing: border-box;
+  gap: 10px;
+}
+
+/* half-width: 반씩 차지 */
+.half-width {
+  width: 50%;
+  box-sizing: border-box;
+}
+
+/* full-width: 전체 100% 차지 */
+.full-width {
+  width: 100%;
+  box-sizing: border-box;
 }

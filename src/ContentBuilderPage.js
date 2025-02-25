@@ -1,91 +1,153 @@
 import React, { useState } from 'react';
-import { 
-  FaFileVideo, FaFileAudio, FaFileImage, 
-  FaQuestionCircle, FaFileAlt, FaFilePdf, 
-  FaTrashAlt, FaCheck 
-} from 'react-icons/fa';
+import { FaBell, FaUserCircle, FaCheck, FaFilter } from 'react-icons/fa';
+import DetailInputPage from './DetailInputPage';
+import CourseListPage from './CourseListPage';
 import './ContentBuilderPage.css';
 
 function ContentBuilderPage() {
-  // 상단 메뉴 (예: 과목, 라이브러리, 설정)
-  const mainMenus = ['과목', '라이브러리', '설정'];
+  // 전체 뷰 상태 ("builder" | "detail" | "list")
+  const [view, setView] = useState("builder");
 
-  // 과목 관리 (기본 입력 기능, 실제로는 추가 기능 등 추후 구현)
+  // 빌더/상세정보 탭만 제어할 때도 동일하게 view만 사용하거나 별도 상태로 제어 가능
+  const [viewTab, setViewTab] = useState("builder");
+
+  // 과목, 차시, 페이지 상태
   const [courseName, setCourseName] = useState("");
   const [savedCourseName, setSavedCourseName] = useState("");
 
-  // 차시/페이지 관리 (간단한 탭 형식, 실제 작업 환경에 맞게 확장 가능)
   const [lessons, setLessons] = useState([
-    { id: 1, name: "차시 1", pages: [ { id: 1, name: "페이지 1", contentItems: [] } ] }
+    {
+      id: 1,
+      name: "1차시",
+      pages: [{ id: 1, name: "1페이지", contentItems: [] }]
+    }
   ]);
-  const [newLessonName, setNewLessonName] = useState("");
   const [currentLessonId, setCurrentLessonId] = useState(1);
-  const currentLesson = lessons.find(l => l.id === currentLessonId);
+  const [newLessonName, setNewLessonName] = useState("");
   const [newPageName, setNewPageName] = useState("");
-  const [currentPageId, setCurrentPageId] = useState(1);
-  const currentPage = currentLesson.pages.find(p => p.id === currentPageId);
 
-  // 라이브러리 파일 목록 (예시 데이터)
-  const [libraryFiles, setLibraryFiles] = useState([
-    { name: "intro.mp4", extension: "mp4" },
-    { name: "lecture1.pdf", extension: "pdf" },
-    { name: "image1.jpg", extension: "jpg" },
-    { name: "audio1.mp3", extension: "mp3" },
-    { name: "quiz1", extension: "quiz" }
+  // 현재 선택된 차시, 페이지
+  const currentLesson = lessons.find(l => l.id === currentLessonId) || lessons[0];
+  const [currentPageId, setCurrentPageId] = useState(1);
+  const currentPage = currentLesson.pages.find(p => p.id === currentPageId) || currentLesson.pages[0];
+
+  // 라이브러리: 공통, 페이지 파일
+  const [lessonLibraryFiles, setLessonLibraryFiles] = useState([
+    { name: "common_intro.mp4", extension: "mp4" },
+    { name: "common_guide.pdf", extension: "pdf" }
+  ]);
+  const [pageLibraryFiles, setPageLibraryFiles] = useState([
+    { name: "page_image1.jpg", extension: "jpg" },
+    { name: "page_audio1.mp3", extension: "mp3" }
   ]);
 
-  // 미리보기 영역에 추가된 콘텐츠 항목 (파일 + 위치 정보)
-  const [previewItems, setPreviewItems] = useState([]);
+  // **새롭게 추가할 UI 요소 라이브러리**
+  const [uiElements] = useState([
+    { type: "input", name: "텍스트입력" },
+    { type: "button", name: "버튼" },
+    { type: "checkbox", name: "체크박스" },
+    { type: "select", name: "드롭다운" }
+  ]);
 
-  // 드래그앤드롭: 라이브러리 파일 드래그 시 데이터 설정
-  const handleDragStart = (e, file) => {
+  // 프리뷰 아이템
+  const [previewItems, setPreviewItems] = useState([]);
+  const [isPreviewDragOver, setIsPreviewDragOver] = useState(false);
+
+  // ---------------------------
+  // 파일 / UI 요소 드래그핸들러
+  // ---------------------------
+  const handleLibraryDragStart = (e, file) => {
+    // 파일 정보를 JSON에 담아 전송
     e.dataTransfer.setData("application/json", JSON.stringify(file));
   };
 
-  // 라이브러리 파일 선택 (파일 업로드 기능)
-  const handleFileSelect = (e) => {
+  // UI 요소 드래그
+  const handleUiElementDragStart = (e, elem) => {
+    // elem = { type: "button", name: "버튼" }, 등등
+    e.dataTransfer.setData("application/json", JSON.stringify(elem));
+  };
+
+  // 파일 업로드
+  const handleLessonFileSelect = (e) => {
     const files = Array.from(e.target.files);
     const newFiles = files.map(file => {
       const parts = file.name.split('.');
       const extension = parts[parts.length - 1].toLowerCase();
       return { name: file.name, extension };
     });
-    setLibraryFiles(prev => [...prev, ...newFiles]);
+    setLessonLibraryFiles(prev => [...prev, ...newFiles]);
+  };
+  const handlePageFileSelect = (e) => {
+    const files = Array.from(e.target.files);
+    const newFiles = files.map(file => {
+      const parts = file.name.split('.');
+      const extension = parts[parts.length - 1].toLowerCase();
+      return { name: file.name, extension };
+    });
+    setPageLibraryFiles(prev => [...prev, ...newFiles]);
   };
 
-  // 미리보기 영역: 드래그 오버 및 드래그 리브 처리 (시각적 효과)
-  const [isPreviewDragOver, setIsPreviewDragOver] = useState(false);
-
+  // ---------------------------
+  // 프리뷰 드래그앤드롭
+  // ---------------------------
   const handlePreviewDragOver = (e) => {
     e.preventDefault();
     setIsPreviewDragOver(true);
   };
-
   const handlePreviewDragLeave = (e) => {
     e.preventDefault();
     setIsPreviewDragOver(false);
   };
-
-  // 미리보기 영역에 파일을 드랍하여 콘텐츠 항목으로 추가 (드랍 위치에 따라 좌표 기록)
   const handlePreviewDrop = (e) => {
     e.preventDefault();
     setIsPreviewDragOver(false);
     const rect = e.currentTarget.getBoundingClientRect();
     const x = e.clientX - rect.left;
     const y = e.clientY - rect.top;
-    const fileData = JSON.parse(e.dataTransfer.getData("application/json"));
-    // Prevent duplicate insertion
-    if (!previewItems.find(item => item.name === fileData.name)) {
-      setPreviewItems([...previewItems, { ...fileData, x, y }]);
+
+    const data = JSON.parse(e.dataTransfer.getData("application/json"));
+    // 중복 체크
+    if (!previewItems.some(item => item.name === data.name)) {
+      setPreviewItems([...previewItems, { ...data, x, y }]);
     }
   };
 
-  // Helper: 파일 사용 여부 (미리보기에 추가된 파일은 "사용됨" 상태)
-  const isFileUsed = (file) => {
-    return previewItems.some(item => item.name === file.name);
+  // 미리보기에서 파일/요소 구분 렌더
+  const renderPreviewItem = (item) => {
+    // 파일인 경우: { name, extension }
+    if (item.extension) {
+      return item.name;
+    }
+    // UI 요소인 경우: { type, name }
+    switch (item.type) {
+      case "input":
+        return <input placeholder={item.name} style={{ width: "120px" }} />;
+      case "button":
+        return <button>{item.name}</button>;
+      case "checkbox":
+        return (
+          <label style={{ display: "inline-flex", alignItems: "center" }}>
+            <input type="checkbox" />
+            <span style={{ marginLeft: 5 }}>{item.name}</span>
+          </label>
+        );
+      case "select":
+        return (
+          <select>
+            <option>{item.name}</option>
+            <option>옵션1</option>
+            <option>옵션2</option>
+          </select>
+        );
+      default:
+        return item.name;
+    }
   };
 
-  // 파일 태그의 배경색 (확장자별)
+  // 이미 미리보기로 추가된 파일인지 확인
+  const isFileUsed = (file) => previewItems.some(item => item.name === file.name);
+
+  // 확장자 색
   const getColorByExtension = (extension) => {
     const mapping = {
       mp4: "#DC143C",
@@ -101,199 +163,416 @@ function ContentBuilderPage() {
     return mapping[extension] || "#777";
   };
 
-  // 예시: 과목 저장 버튼 (기본 기능)
-  const saveCourseName = () => {
-    setSavedCourseName(courseName);
-  };
+  // ---------------------------
+  // 과목/차시/페이지 저장
+  // ---------------------------
+  const handleSaveCourse = () => setSavedCourseName(courseName);
 
-  // 예시: 차시 저장
-  const saveLesson = () => {
-    if (newLessonName.trim() === "") return;
+  const handleSaveLesson = () => {
     const newId = lessons.length + 1;
-    const newLesson = { id: newId, name: newLessonName, pages: [ { id: 1, name: "페이지 1", contentItems: [] } ] };
+    const generatedName = newLessonName.trim()
+      ? newLessonName
+      : `${newId}차시`;
+    const newLesson = {
+      id: newId,
+      name: generatedName,
+      pages: [{ id: 1, name: "1페이지", contentItems: [] }]
+    };
     setLessons([...lessons, newLesson]);
     setCurrentLessonId(newId);
     setCurrentPageId(1);
     setNewLessonName("");
   };
 
-  // 예시: 페이지 저장
-  const savePage = () => {
-    if (newPageName.trim() === "") return;
-    const updatedLessons = lessons.map(lesson => {
+  const handleSavePage = () => {
+    if (!currentLesson) return;
+    setLessons(prev => prev.map(lesson => {
       if (lesson.id === currentLessonId) {
         const newPageId = lesson.pages.length + 1;
-        const newPage = { id: newPageId, name: newPageName, contentItems: [] };
+        const generatedName = newPageName.trim()
+          ? newPageName
+          : `${newPageId}페이지`;
+        const newPage = { id: newPageId, name: generatedName, contentItems: [] };
         return { ...lesson, pages: [...lesson.pages, newPage] };
       }
       return lesson;
-    });
-    setLessons(updatedLessons);
+    }));
     setCurrentPageId(currentLesson.pages.length + 1);
     setNewPageName("");
   };
 
-  // 전체 저장 (예시)
-  const handleSave = () => {
-    alert("전체 저장되었습니다!");
+  // ---------------------------
+  // 빌더/상세정보 탭 전환
+  // ---------------------------
+  const handleBuilderTab = () => {
+    setViewTab("builder");
+    setView("builder"); // 전체 뷰도 builder
+  };
+  const handleDetailTab = () => {
+    setViewTab("detail");
+    setView("detail"); // 전체 뷰도 detail
   };
 
+  // ---------------------------
+  // 전체 저장
+  // ---------------------------
+  const handleSaveAll = () => {
+    // 템플릿 문자열에 backtick(`) 사용
+    alert(`전체 저장 되었습니다!\n과목명: ${savedCourseName}`);
+  };
+
+  // ---------------------------
+  // 상세 페이지: 저장/뒤로가기
+  // ---------------------------
+  const handleDetailSave = (detailData) => {
+    // detailData 처리 (필요 시)
+    setView("builder");
+    setViewTab("builder");
+  };
+  const handleDetailBack = () => {
+    setView("builder");
+    setViewTab("builder");
+  };
+
+  // ---------------------------
+  // 라우팅 분기(또는 탭 분기)
+  // ---------------------------
+  if (view === "list") {
+    return <CourseListPage />;
+  }
+  if (view === "detail") {
+    // 상세정보 화면
+    return (
+      <div className="builder-page">
+        {/* 상단 메뉴 */}
+        <header className="top-menu">
+          <div className="menu-left">
+            <img 
+              src="http://hcms.hunet.co.kr/image/hunet_hcms_logo.png" 
+              alt="Company Logo" 
+              className="company-logo"
+            />
+              {/* 과목을 누르면 setView("list")를 호출 */}
+            <div className="top-menu-item" onClick={() => setView("list")} >과목</div>
+            <div className="top-menu-item">라이브러리</div>
+            <div className="top-menu-item">설정</div>
+          </div>
+          <div className="menu-right">
+            <FaBell className="icon" title="알림" />
+            <FaUserCircle className="icon" title="로그인" />
+          </div>
+        </header>
+        
+        {/* 서브헤더 */}
+        <div className="sub-header builder-subheader">
+          <div className="sub-left builder-tabs">
+            <button 
+              className={`tab-btn ${viewTab === "builder" ? "active" : ""}`} 
+              onClick={handleBuilderTab}
+            >
+              빌더
+            </button>
+            <button 
+              className={`tab-btn ${viewTab === "detail" ? "active" : ""}`}
+              onClick={handleDetailTab}
+            >
+              상세정보
+            </button>
+          </div>
+          <div className="sub-right">
+            <button className="save-button" onClick={handleSaveAll}>
+              저장
+            </button>
+          </div>
+        </div>
+        
+        {/* 메인: DetailInputPage */}
+        <div className="builder-main-container">
+          <DetailInputPage 
+            onSaveDetail={handleDetailSave} 
+            onBack={handleDetailBack}
+          />
+        </div>
+      </div>
+    );
+  }
+
+  // 기본( builder ) 뷰
   return (
     <div className="builder-page">
-      {/* 상단 대메뉴 */}
-      <div className="top-menu">
-        {mainMenus.map((menu, index) => (
-          <div key={index} className="top-menu-item">{menu}</div>
-        ))}
+      {/* 상단 메뉴 */}
+      <header className="top-menu">
+        <div className="menu-left">
+          <img 
+            src="http://hcms.hunet.co.kr/image/hunet_hcms_logo.png" 
+            alt="Company Logo" 
+            className="company-logo"
+          />
+          <div className="top-menu-item">과목</div>
+          <div className="top-menu-item">라이브러리</div>
+          <div className="top-menu-item">설정</div>
+        </div>
+        <div className="menu-right">
+          <FaBell className="icon" title="알림" />
+          <FaUserCircle className="icon" title="로그인" />
+        </div>
+      </header>
+
+      {/* 서브헤더: 빌더/상세정보 탭 + 저장 버튼 */}
+      <div className="sub-header builder-subheader">
+        <div className="sub-left builder-tabs">
+          <button 
+            className={`tab-btn ${viewTab === "builder" ? "active" : ""}`} 
+            onClick={handleBuilderTab}
+          >
+            빌더
+          </button>
+          <button 
+            className={`tab-btn ${viewTab === "detail" ? "active" : ""}`} 
+            onClick={handleDetailTab}
+          >
+            상세정보
+          </button>
+        </div>
+        <div className="sub-right">
+          <button className="save-button" onClick={handleSaveAll}>
+            저장
+          </button>
+        </div>
       </div>
 
-      {/* 메인 영역: 좌측 툴바와 우측 빌더 화면 */}
-      <div className="main-container">
-        {/* 좌측 패널: 툴바 */}
-        <div className="left-panel">
-          <div className="library-toolbar">
-            <div className="toolbar-item" title="MP4"><FaFileVideo size={24} /></div>
-            <div className="toolbar-item" title="MP3"><FaFileAudio size={24} /></div>
-            <div className="toolbar-item" title="Image"><FaFileImage size={24} /></div>
-            <div className="toolbar-item" title="Quiz"><FaQuestionCircle size={24} /></div>
-            <div className="toolbar-item" title="Article"><FaFileAlt size={24} /></div>
-            <div className="toolbar-item" title="PDF"><FaFilePdf size={24} /></div>
+      {/* 메인 컨테이너: 왼쪽(과목/차시/페이지), 오른쪽(라이브러리 + 프리뷰) */}
+      <div className="builder-main-container">
+        {/* 왼쪽 영역 */}
+        <div className="builder-left-side">
+          {/* 과목명/차시/페이지 입력 */}
+          <div className="management-panel single-line">
+            <label className="section-label">과목명:</label>
+            <input
+              type="text"
+              placeholder="과목명 입력"
+              value={courseName}
+              onChange={(e) => setCourseName(e.target.value)}
+              className="management-input long-input"
+            />
+            <button onClick={handleSaveCourse} className="management-save-button red-button">
+              저장
+            </button>
+          </div>
+          <div className="management-panel single-line">
+            <label className="section-label">차시명:</label>
+            <input
+              type="text"
+              placeholder="차시명 입력 (미입력 시 자동생성)"
+              value={newLessonName}
+              onChange={(e) => setNewLessonName(e.target.value)}
+              className="management-input long-input"
+            />
+            <button onClick={handleSaveLesson} className="management-save-button red-button">
+              저장
+            </button>
+          </div>
+          <div className="management-panel single-line">
+            <label className="section-label">페이지명:</label>
+            <input
+              type="text"
+              placeholder="페이지명 입력 (미입력 시 자동생성)"
+              value={newPageName}
+              onChange={(e) => setNewPageName(e.target.value)}
+              className="management-input long-input"
+            />
+            <button onClick={handleSavePage} className="management-save-button red-button">
+              저장
+            </button>
+          </div>
+
+          {/* 저장된 정보 목록 */}
+          <div className="management-panel saved-info-panel">
+            <h4 className="saved-course-name">
+              {savedCourseName ? `과목명: ${savedCourseName}` : "과목명이 없습니다."}
+            </h4>
+            <div className="saved-lessons">
+              <div className="saved-row">
+                <label>차시:</label>
+                <div className="tabs-container">
+                  {lessons.map(lesson => (
+                    <div
+                      key={lesson.id}
+                      className={`tab-button ${currentLessonId === lesson.id ? "active" : ""}`}
+                      onClick={() => {
+                        setCurrentLessonId(lesson.id);
+                        setCurrentPageId(lesson.pages[0].id);
+                      }}
+                    >
+                      {lesson.name}
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="saved-row">
+                <label>페이지:</label>
+                <div className="tabs-container">
+                  {currentLesson.pages.map(page => (
+                    <div
+                      key={page.id}
+                      className={`tab-button ${currentPageId === page.id ? "active" : ""}`}
+                      onClick={() => setCurrentPageId(page.id)}
+                    >
+                      {page.name}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* 우측 패널: 빌더 화면 */}
-        <div className="right-panel">
-          {/* 관리 영역: 과목, 차시, 페이지 입력 및 저장 */}
-          <div className="management-panel">
-            {/* 과목 관리 */}
-            <div className="management-section">
-              <label className="section-label">과목명:</label>
-              <div className="management-row">
-                <input
-                  type="text"
-                  placeholder="과목명을 입력하세요"
-                  value={courseName}
-                  onChange={(e) => setCourseName(e.target.value)}
-                  className="management-input"
-                />
-                <button onClick={saveCourseName} className="management-save-button">저장</button>
+        {/* 오른쪽 영역 */}
+          {/* 공통/페이지 라이브러리 - 아래 배치 예시 (원하면 위치 조정) */}
+          <div className="library-container">
+            <div className="builder-right-side">
+          
+        {/* Row1: 공통 라이브러리(왼) + 페이지 라이브러리(오) */}
+        <div className="row-libraries">          
+           <div className="library-section half-width">
+              <div className="section-header">공통 라이브러리</div>
+              <div className="search-row">
+                <input type="text" placeholder="검색어 입력" className="search-input" />
+                <button className="search-button">
+                  <FaFilter /> 필터
+                </button>
               </div>
-              {savedCourseName && <div className="saved-value">저장된 과목: {savedCourseName}</div>}
-            </div>
-            {/* 차시 관리 */}
-            <div className="management-section">
-              <label className="section-label">차시명:</label>
-              <div className="management-row">
+              <div className="upload-area">
+                <p>
+                  업로드: 드래그앤드롭 또는{" "}
+                  <label htmlFor="lessonFileInput" className="upload-button">
+                    파일 선택
+                  </label>
+                </p>
                 <input
-                  type="text"
-                  placeholder="차시명을 입력하세요"
-                  value={newLessonName}
-                  onChange={(e) => setNewLessonName(e.target.value)}
-                  className="management-input"
+                  type="file"
+                  multiple
+                  onChange={handleLessonFileSelect}
+                  id="lessonFileInput"
+                  style={{ display: "none" }}
                 />
-                <button onClick={saveLesson} className="management-save-button">저장</button>
               </div>
-              <div className="tabs-container">
-                {lessons.map(lesson => (
-                  <div 
-                    key={lesson.id} 
-                    className={`tab-button ${currentLessonId === lesson.id ? "active" : ""}`}
-                    onClick={() => {
-                      setCurrentLessonId(lesson.id);
-                      setCurrentPageId(lesson.pages[0].id);
+              <div className="uploaded-files">
+                {lessonLibraryFiles.map((file, i) => (
+                  <div
+                    key={i}
+                    className="file-tag"
+                    style={{
+                      backgroundColor: getColorByExtension(file.extension),
+                      fontWeight: isFileUsed(file) ? "bold" : "normal"
                     }}
+                    draggable
+                    onDragStart={(e) => handleLibraryDragStart(e, file)}
                   >
-                    {lesson.name}
-                    <FaTrashAlt 
-                      className="delete-icon" 
-                      onClick={(e) => { e.stopPropagation(); /* 삭제 기능 추가 */ }}
-                    />
+                    {file.name}
+                    {isFileUsed(file) && <FaCheck className="used-icon" />}
                   </div>
                 ))}
               </div>
             </div>
-            {/* 페이지 관리 */}
-            <div className="management-section">
-              <label className="section-label">페이지명:</label>
-              <div className="management-row">
-                <input
-                  type="text"
-                  placeholder="페이지명을 입력하세요"
-                  value={newPageName}
-                  onChange={(e) => setNewPageName(e.target.value)}
-                  className="management-input"
-                />
-                <button onClick={savePage} className="management-save-button">저장</button>
+
+            <div className="library-section half-width">
+              <div className="section-header">페이지 라이브러리</div>
+              <div className="search-row">
+                <input type="text" placeholder="검색어 입력" className="search-input" />
+                <button className="search-button">
+                  <FaFilter /> 필터
+                </button>
               </div>
-              <div className="tabs-container">
-                {currentLesson.pages.map(page => (
-                  <div 
-                    key={page.id} 
-                    className={`tab-button ${currentPageId === page.id ? "active" : ""}`}
-                    onClick={() => setCurrentPageId(page.id)}
+              <div className="upload-area">
+                <p>
+                  업로드: 드래그앤드롭 또는{" "}
+                  <label htmlFor="pageFileInput" className="upload-button">
+                    파일 선택
+                  </label>
+                </p>
+                <input
+                  type="file"
+                  multiple
+                  onChange={handlePageFileSelect}
+                  id="pageFileInput"
+                  style={{ display: "none" }}
+                />
+              </div>
+              <div className="uploaded-files">
+                {pageLibraryFiles.map((file, i) => (
+                  <div
+                    key={i}
+                    className="file-tag"
+                    style={{
+                      backgroundColor: getColorByExtension(file.extension),
+                      fontWeight: isFileUsed(file) ? "bold" : "normal"
+                    }}
+                    draggable
+                    onDragStart={(e) => handleLibraryDragStart(e, file)}
                   >
-                    {page.name}
-                    <FaTrashAlt 
-                      className="delete-icon" 
-                      onClick={(e) => { e.stopPropagation(); /* 삭제 기능 추가 */ }}
-                    />
+                    {file.name}
+                    {isFileUsed(file) && <FaCheck className="used-icon" />}
                   </div>
                 ))}
               </div>
             </div>
           </div>
-
-          {/* 라이브러리 업로드 영역 */}
-          <div className="library-upload-area">
-            <p>파일 업로드: 드래그앤드롭 또는 <label htmlFor="fileInput" className="upload-button">파일 선택</label></p>
-            <input 
-              type="file" 
-              multiple 
-              onChange={handleFileSelect} 
-              id="fileInput" 
-              style={{ display: 'none' }}
-            />
-            <div className="uploaded-files">
-              {libraryFiles.map((file, index) => (
+        </div>
+          {/* Row2: UI 라이브러리 (전체 폭) */}
+          <div className="row-libraries">     
+          <div className="ui-library-section library-section full-width">
+            <div className="section-header">UI 라이브러리</div>
+            <p style={{ fontSize: "0.9em", marginBottom: 5 }}>
+              드래그하여 미리보기 화면에 배치하세요.
+            </p>
+            <div className="ui-elements-container">
+              {uiElements.map((elem, idx) => (
                 <div
-                  key={index}
-                  className="file-tag"
-                  style={{ backgroundColor: getColorByExtension(file.extension), fontWeight: isFileUsed(file) ? 'bold' : 'normal' }}
+                  key={idx}
+                  className="ui-element-tag"
                   draggable
-                  onDragStart={(e) => handleDragStart(e, file)}
+                  onDragStart={(e) => handleUiElementDragStart(e, elem)}
                 >
-                  {file.name}
-                  {isFileUsed(file) && <FaCheck title="사용됨" className="used-icon" />}
+                  {elem.name}
                 </div>
               ))}
             </div>
           </div>
-
-          {/* 미리보기 영역: 사용자가 드래그앤드롭으로 콘텐츠 배치 */}
-          <div 
-            className="preview-area"
-            onDrop={handlePreviewDrop}
-            onDragOver={handlePreviewDragOver}
-            onDragLeave={handlePreviewDragLeave}
-          >
-            <p className="preview-placeholder">여기에 파일을 드래그하면 콘텐츠 미리보기가 나타납니다.</p>
-            {previewItems.map((item, index) => (
-              <div 
-                key={index} 
-                className="preview-item" 
-                style={{ left: item.x, top: item.y }}
-              >
-                {item.name}
-              </div>
-            ))}
           </div>
 
-          {/* 전체 저장 버튼 */}
-          <div className="global-save">
-            <button onClick={handleSave} className="global-save-button">전체 저장</button>
+          {/* 프리뷰 (그 아래) */}
+        {/* Row3: PREVIEW (전체 폭) */}
+        <div className="row-libraries">
+        <div className="preview-section full-width">
+            <div 
+              className={`preview-area ${isPreviewDragOver ? "drag-over" : ""}`}
+              onDrop={handlePreviewDrop}
+              onDragOver={handlePreviewDragOver}
+              onDragLeave={handlePreviewDragLeave}
+            >
+              {previewItems.length === 0 ? (
+                <p className="preview-placeholder">파일 또는 UI요소를 드래그하세요.</p>
+              ) : (
+                previewItems.map((item, idx) => (
+                  <div
+                    key={idx}
+                    className="preview-item"
+                    style={{ left: item.x, top: item.y }}
+                  >
+                    {renderPreviewItem(item)}
+                  </div>
+                ))
+              )}
+            </div>
+          </div>            
           </div>
+
+          {/* end library-container */}
         </div>
+        {/* end builder-right-side */}
       </div>
+      {/* end builder-main-container */}
     </div>
   );
 }

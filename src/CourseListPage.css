@@ -1,0 +1,269 @@
+/* 공통 상단 메뉴 */
+.top-menu {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 60px;
+    background-color: #F42628; /* Export 버튼과 동일 색상 */
+    padding: 0 20px;
+    font-size: 1.5em;
+  }
+  .menu-left {
+    display: flex;
+    gap: 20px;
+  }
+
+  /* 로고 사이즈 조절 */
+.company-logo {
+    height: 40px;       /* 높이 40px (또는 80% 등) */
+    width: auto;        /* 비율 유지를 위해 auto */
+    margin-right: 20px; /* 오른쪽 여백 */
+  }
+
+  .top-menu-item {
+    font-size: 0.75em; /* 절반 크기 */
+    margin-right: 20px;
+    cursor: pointer;
+  }
+  
+  .menu-right {
+    display: flex;
+    gap: 15px;
+  }
+  .icon {
+    cursor: pointer;
+  }
+  
+  /* 서브헤더: 검색/필터 및 정렬/뷰 전환 */
+  .sub-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: #f8f8f8;
+    border-bottom: 1px solid #ccc;
+  }
+  .sub-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .search-input {
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1em;
+  }
+  .filter-button {
+    padding: 5px 10px;
+    background-color: #2E8B57;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1em;
+  }
+  .sub-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .sort-select {
+    padding: 5px;
+    font-size: 1em;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  .view-button {
+    background-color: #2E8B57;
+    color: #fff;
+    border: none;
+    padding: 5px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1.2em;
+  }
+  .view-button.active {
+    background-color: #004d40;
+  }
+  
+  /* 그리드 뷰 */
+  .course-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    padding: 20px;
+  }
+  .course-card {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+  }
+  .thumbnail-wrapper {
+    position: relative;
+  }
+  .thumbnail-link {
+    display: block;
+  }
+  .course-thumbnail {
+    width: 100%;
+    display: block;
+  }
+  .card-export {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background-color: rgba(0,0,0,0.6);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    padding: 3px 5px;
+    cursor: pointer;
+    font-size: 1em;
+  }
+  .course-info {
+    padding: 10px;
+  }
+  .course-title {
+    margin: 0 0 5px;
+    font-size: 1.2em;
+  }
+  .course-author {
+    margin: 0;
+    font-size: 1em;
+    color: #666;
+  }
+  .course-date {
+    margin: 5px 0 0;
+    font-size: 0.9em;
+    color: #999;
+  }
+  
+  /* 리스트 뷰 */
+  .course-list-view {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px;
+  }
+  .course-list-item {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+  }
+  .list-thumbnail-link {
+    display: block;
+  }
+  .list-thumbnail {
+    width: 100px;
+    border-radius: 4px;
+    margin-right: 10px;
+  }
+  .list-info {
+    flex: 1;
+  }
+  .list-info h3 {
+    margin: 0 0 5px;
+    font-size: 1.2em;
+  }
+  .list-info p {
+    margin: 0;
+    font-size: 1em;
+    color: #666;
+  }
+  .export-button.list-export {
+    background-color: #DC143C;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    font-size: 1em;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  .new-course-button {
+    background-color: #2E8B57;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    font-size: 1em;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+
+  /* 전체 폼 컨테이너 */
+.detail-content {
+    flex: 1; 
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  
+  /* 폼 본문을 감싸는 래퍼 */
+  .detail-form-container {
+    width: 100%;
+    max-width: 800px;
+    margin: 0 auto; /* 가운데 정렬 */
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 20px;
+    box-sizing: border-box;
+  }
+  
+  /* 제목 */
+  .detail-title {
+    font-size: 1.2em;
+    margin-bottom: 15px;
+    font-weight: bold;
+  }
+  
+  /* 개별 입력 필드 스타일 */
+  .detail-field {
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  
+  .detail-field label {
+    font-weight: bold;
+    font-size: 1em;
+  }
+  
+  .detail-field input,
+  .detail-field textarea {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 0.9em;
+    box-sizing: border-box;
+    resize: vertical; /* textarea 크기 조절 가능 */
+  }
+  
+  /* 저장 버튼 (red-button) */
+  .red-button {
+    background-color: #DC143C;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    font-size: 0.9em;
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  .red-button:hover {
+    background-color: #c8122f;
+  }
+  

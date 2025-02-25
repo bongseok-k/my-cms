@@ -12,7 +12,7 @@ function MainPage() {
 
   const handlePackagingRegistration = () => {
     // 패키징 등록은 추후 페이지로 연결하거나 임시 알림
-    alert('패키징 등록 페이지는 준비 중입니다.');
+    navigate('/course-list');
   };
 
   return (
@@ -25,7 +25,7 @@ function MainPage() {
             신규 생성
           </button>
           <button className="main-button" onClick={handlePackagingRegistration}>
-            패키징 등록
+            과목 리스트
           </button>
         </div>
       </div>
