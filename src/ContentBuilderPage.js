@@ -29,7 +29,8 @@ function ContentBuilderPage() {
   // 현재 선택된 차시, 페이지
   const currentLesson = lessons.find(l => l.id === currentLessonId) || lessons[0];
   const [currentPageId, setCurrentPageId] = useState(1);
-  const currentPage = currentLesson.pages.find(p => p.id === currentPageId) || currentLesson.pages[0];
+  const currentPage =
+    currentLesson.pages.find(p => p.id === currentPageId) || currentLesson.pages[0];
 
   // 라이브러리: 공통, 페이지 파일
   const [lessonLibraryFiles, setLessonLibraryFiles] = useState([
@@ -68,19 +69,19 @@ function ContentBuilderPage() {
   };
 
   // 파일 업로드
-  const handleLessonFileSelect = (e) => {
+  const handleLessonFileSelect = e => {
     const files = Array.from(e.target.files);
     const newFiles = files.map(file => {
-      const parts = file.name.split('.');
+      const parts = file.name.split(".");
       const extension = parts[parts.length - 1].toLowerCase();
       return { name: file.name, extension };
     });
     setLessonLibraryFiles(prev => [...prev, ...newFiles]);
   };
-  const handlePageFileSelect = (e) => {
+  const handlePageFileSelect = e => {
     const files = Array.from(e.target.files);
     const newFiles = files.map(file => {
-      const parts = file.name.split('.');
+      const parts = file.name.split(".");
       const extension = parts[parts.length - 1].toLowerCase();
       return { name: file.name, extension };
     });
@@ -90,15 +91,15 @@ function ContentBuilderPage() {
   // ---------------------------
   // 프리뷰 드래그앤드롭
   // ---------------------------
-  const handlePreviewDragOver = (e) => {
+  const handlePreviewDragOver = e => {
     e.preventDefault();
     setIsPreviewDragOver(true);
   };
-  const handlePreviewDragLeave = (e) => {
+  const handlePreviewDragLeave = e => {
     e.preventDefault();
     setIsPreviewDragOver(false);
   };
-  const handlePreviewDrop = (e) => {
+  const handlePreviewDrop = e => {
     e.preventDefault();
     setIsPreviewDragOver(false);
     const rect = e.currentTarget.getBoundingClientRect();
@@ -113,7 +114,7 @@ function ContentBuilderPage() {
   };
 
   // 미리보기에서 파일/요소 구분 렌더
-  const renderPreviewItem = (item) => {
+  const renderPreviewItem = item => {
     // 파일인 경우: { name, extension }
     if (item.extension) {
       return item.name;
@@ -145,10 +146,10 @@ function ContentBuilderPage() {
   };
 
   // 이미 미리보기로 추가된 파일인지 확인
-  const isFileUsed = (file) => previewItems.some(item => item.name === file.name);
+  const isFileUsed = file => previewItems.some(item => item.name === file.name);
 
   // 확장자 색
-  const getColorByExtension = (extension) => {
+  const getColorByExtension = extension => {
     const mapping = {
       mp4: "#DC143C",
       mp3: "#2E8B57",
@@ -170,9 +171,7 @@ function ContentBuilderPage() {
 
   const handleSaveLesson = () => {
     const newId = lessons.length + 1;
-    const generatedName = newLessonName.trim()
-      ? newLessonName
-      : `${newId}차시`;
+    const generatedName = newLessonName.trim() ? newLessonName : `${newId}차시`;
     const newLesson = {
       id: newId,
       name: generatedName,
@@ -186,17 +185,19 @@ function ContentBuilderPage() {
 
   const handleSavePage = () => {
     if (!currentLesson) return;
-    setLessons(prev => prev.map(lesson => {
-      if (lesson.id === currentLessonId) {
-        const newPageId = lesson.pages.length + 1;
-        const generatedName = newPageName.trim()
-          ? newPageName
-          : `${newPageId}페이지`;
-        const newPage = { id: newPageId, name: generatedName, contentItems: [] };
-        return { ...lesson, pages: [...lesson.pages, newPage] };
-      }
-      return lesson;
-    }));
+    setLessons(prev =>
+      prev.map(lesson => {
+        if (lesson.id === currentLessonId) {
+          const newPageId = lesson.pages.length + 1;
+          const generatedName = newPageName.trim()
+            ? newPageName
+            : `${newPageId}페이지`;
+          const newPage = { id: newPageId, name: generatedName, contentItems: [] };
+          return { ...lesson, pages: [...lesson.pages, newPage] };
+        }
+        return lesson;
+      })
+    );
     setCurrentPageId(currentLesson.pages.length + 1);
     setNewPageName("");
   };
@@ -224,7 +225,7 @@ function ContentBuilderPage() {
   // ---------------------------
   // 상세 페이지: 저장/뒤로가기
   // ---------------------------
-  const handleDetailSave = (detailData) => {
+  const handleDetailSave = detailData => {
     // detailData 처리 (필요 시)
     setView("builder");
     setViewTab("builder");
@@ -247,13 +248,15 @@ function ContentBuilderPage() {
         {/* 상단 메뉴 */}
         <header className="top-menu">
           <div className="menu-left">
-            <img 
-              src="http://hcms.hunet.co.kr/image/hunet_hcms_logo.png" 
-              alt="Company Logo" 
+            <img
+              src="http://hcms.hunet.co.kr/image/hunet_hcms_logo.png"
+              alt="Company Logo"
               className="company-logo"
             />
-              {/* 과목을 누르면 setView("list")를 호출 */}
-            <div className="top-menu-item" onClick={() => setView("list")} >과목</div>
+            {/* 과목을 누르면 setView("list")를 호출 */}
+            <div className="top-menu-item" onClick={() => setView("list")}>
+              과목
+            </div>
             <div className="top-menu-item">라이브러리</div>
             <div className="top-menu-item">설정</div>
           </div>
@@ -262,17 +265,17 @@ function ContentBuilderPage() {
             <FaUserCircle className="icon" title="로그인" />
           </div>
         </header>
-        
+
         {/* 서브헤더 */}
         <div className="sub-header builder-subheader">
           <div className="sub-left builder-tabs">
-            <button 
-              className={`tab-btn ${viewTab === "builder" ? "active" : ""}`} 
+            <button
+              className={`tab-btn ${viewTab === "builder" ? "active" : ""}`}
               onClick={handleBuilderTab}
             >
               빌더
             </button>
-            <button 
+            <button
               className={`tab-btn ${viewTab === "detail" ? "active" : ""}`}
               onClick={handleDetailTab}
             >
@@ -285,13 +288,10 @@ function ContentBuilderPage() {
             </button>
           </div>
         </div>
-        
+
         {/* 메인: DetailInputPage */}
         <div className="builder-main-container">
-          <DetailInputPage 
-            onSaveDetail={handleDetailSave} 
-            onBack={handleDetailBack}
-          />
+          <DetailInputPage onSaveDetail={handleDetailSave} onBack={handleDetailBack} />
         </div>
       </div>
     );
@@ -303,9 +303,9 @@ function ContentBuilderPage() {
       {/* 상단 메뉴 */}
       <header className="top-menu">
         <div className="menu-left">
-          <img 
-            src="http://hcms.hunet.co.kr/image/hunet_hcms_logo.png" 
-            alt="Company Logo" 
+          <img
+            src="http://hcms.hunet.co.kr/image/hunet_hcms_logo.png"
+            alt="Company Logo"
             className="company-logo"
           />
           <div className="top-menu-item">과목</div>
@@ -321,14 +321,14 @@ function ContentBuilderPage() {
       {/* 서브헤더: 빌더/상세정보 탭 + 저장 버튼 */}
       <div className="sub-header builder-subheader">
         <div className="sub-left builder-tabs">
-          <button 
-            className={`tab-btn ${viewTab === "builder" ? "active" : ""}`} 
+          <button
+            className={`tab-btn ${viewTab === "builder" ? "active" : ""}`}
             onClick={handleBuilderTab}
           >
             빌더
           </button>
-          <button 
-            className={`tab-btn ${viewTab === "detail" ? "active" : ""}`} 
+          <button
+            className={`tab-btn ${viewTab === "detail" ? "active" : ""}`}
             onClick={handleDetailTab}
           >
             상세정보
@@ -341,7 +341,7 @@ function ContentBuilderPage() {
         </div>
       </div>
 
-      {/* 메인 컨테이너: 왼쪽(과목/차시/페이지), 오른쪽(라이브러리 + 프리뷰) */}
+      {/* 메인 컨테이너: 왼쪽(과목/차시/페이지), 오른쪽(3행 구조) */}
       <div className="builder-main-container">
         {/* 왼쪽 영역 */}
         <div className="builder-left-side">
@@ -352,7 +352,7 @@ function ContentBuilderPage() {
               type="text"
               placeholder="과목명 입력"
               value={courseName}
-              onChange={(e) => setCourseName(e.target.value)}
+              onChange={e => setCourseName(e.target.value)}
               className="management-input long-input"
             />
             <button onClick={handleSaveCourse} className="management-save-button red-button">
@@ -365,7 +365,7 @@ function ContentBuilderPage() {
               type="text"
               placeholder="차시명 입력 (미입력 시 자동생성)"
               value={newLessonName}
-              onChange={(e) => setNewLessonName(e.target.value)}
+              onChange={e => setNewLessonName(e.target.value)}
               className="management-input long-input"
             />
             <button onClick={handleSaveLesson} className="management-save-button red-button">
@@ -378,7 +378,7 @@ function ContentBuilderPage() {
               type="text"
               placeholder="페이지명 입력 (미입력 시 자동생성)"
               value={newPageName}
-              onChange={(e) => setNewPageName(e.target.value)}
+              onChange={e => setNewPageName(e.target.value)}
               className="management-input long-input"
             />
             <button onClick={handleSavePage} className="management-save-button red-button">
@@ -427,14 +427,11 @@ function ContentBuilderPage() {
           </div>
         </div>
 
-        {/* 오른쪽 영역 */}
-          {/* 공통/페이지 라이브러리 - 아래 배치 예시 (원하면 위치 조정) */}
-          <div className="library-container">
-            <div className="builder-right-side">
-          
-        {/* Row1: 공통 라이브러리(왼) + 페이지 라이브러리(오) */}
-        <div className="row-libraries">          
-           <div className="library-section half-width">
+        {/* 오른쪽 영역: 3행 구조 */}
+        <div className="builder-right-side">
+          {/* Row1: 공통 라이브러리(왼) + 페이지 라이브러리(오) */}
+          <div className="row-libraries">
+            <div className="library-section half-width">
               <div className="section-header">공통 라이브러리</div>
               <div className="search-row">
                 <input type="text" placeholder="검색어 입력" className="search-input" />
@@ -467,7 +464,7 @@ function ContentBuilderPage() {
                       fontWeight: isFileUsed(file) ? "bold" : "normal"
                     }}
                     draggable
-                    onDragStart={(e) => handleLibraryDragStart(e, file)}
+                    onDragStart={e => handleLibraryDragStart(e, file)}
                   >
                     {file.name}
                     {isFileUsed(file) && <FaCheck className="used-icon" />}
@@ -509,7 +506,7 @@ function ContentBuilderPage() {
                       fontWeight: isFileUsed(file) ? "bold" : "normal"
                     }}
                     draggable
-                    onDragStart={(e) => handleLibraryDragStart(e, file)}
+                    onDragStart={e => handleLibraryDragStart(e, file)}
                   >
                     {file.name}
                     {isFileUsed(file) && <FaCheck className="used-icon" />}
@@ -518,57 +515,56 @@ function ContentBuilderPage() {
               </div>
             </div>
           </div>
-        </div>
-          {/* Row2: UI 라이브러리 (전체 폭) */}
-          <div className="row-libraries">     
-          <div className="ui-library-section library-section full-width">
-            <div className="section-header">UI 라이브러리</div>
-            <p style={{ fontSize: "0.9em", marginBottom: 5 }}>
-              드래그하여 미리보기 화면에 배치하세요.
-            </p>
-            <div className="ui-elements-container">
-              {uiElements.map((elem, idx) => (
-                <div
-                  key={idx}
-                  className="ui-element-tag"
-                  draggable
-                  onDragStart={(e) => handleUiElementDragStart(e, elem)}
-                >
-                  {elem.name}
-                </div>
-              ))}
-            </div>
-          </div>
-          </div>
 
-          {/* 프리뷰 (그 아래) */}
-        {/* Row3: PREVIEW (전체 폭) */}
-        <div className="row-libraries">
-        <div className="preview-section full-width">
-            <div 
-              className={`preview-area ${isPreviewDragOver ? "drag-over" : ""}`}
-              onDrop={handlePreviewDrop}
-              onDragOver={handlePreviewDragOver}
-              onDragLeave={handlePreviewDragLeave}
-            >
-              {previewItems.length === 0 ? (
-                <p className="preview-placeholder">파일 또는 UI요소를 드래그하세요.</p>
-              ) : (
-                previewItems.map((item, idx) => (
+          {/* Row2: UI 라이브러리 (전체 폭) */}
+          <div className="row-libraries">
+            <div className="ui-library-section library-section full-width">
+              <div className="section-header">UI 라이브러리</div>
+              <p style={{ fontSize: "0.9em", marginBottom: 5 }}>
+                드래그하여 미리보기 화면에 배치하세요.
+              </p>
+              <div className="ui-elements-container">
+                {uiElements.map((elem, idx) => (
                   <div
                     key={idx}
-                    className="preview-item"
-                    style={{ left: item.x, top: item.y }}
+                    className="ui-element-tag"
+                    draggable
+                    onDragStart={e => handleUiElementDragStart(e, elem)}
                   >
-                    {renderPreviewItem(item)}
+                    {elem.name}
                   </div>
-                ))
-              )}
+                ))}
+              </div>
             </div>
-          </div>            
           </div>
 
-          {/* end library-container */}
+          {/* Row3: PREVIEW (전체 폭) */}
+          <div className="row-libraries">
+            <div className="preview-section full-width">
+              <div
+                className={`preview-area ${isPreviewDragOver ? "drag-over" : ""}`}
+                onDrop={handlePreviewDrop}
+                onDragOver={handlePreviewDragOver}
+                onDragLeave={handlePreviewDragLeave}
+              >
+                {previewItems.length === 0 ? (
+                  <p className="preview-placeholder">
+                    파일 또는 UI요소를 드래그하세요.
+                  </p>
+                ) : (
+                  previewItems.map((item, idx) => (
+                    <div
+                      key={idx}
+                      className="preview-item"
+                      style={{ left: item.x, top: item.y }}
+                    >
+                      {renderPreviewItem(item)}
+                    </div>
+                  ))
+                )}
+              </div>
+            </div>
+          </div>
         </div>
         {/* end builder-right-side */}
       </div>

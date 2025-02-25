@@ -298,22 +298,23 @@
 
 /* 미리보기 섹션 */
 .preview-section {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  background-color: #000;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  margin-top: 5px;
-  overflow: hidden;
+  /* preview 섹션에 최소 높이 지정 */
+  min-height: 300px; 
+  /* 또는 고정 높이를 지정해도 됨: height: 400px; */
+  /* 배경색 정도 */
+  background-color: #f9f9f9;
+  /* 기타 flex나 margin 등은 원하는 대로 */
 }
+
 .preview-area {
-  position: relative;
+  /* 드래그영역에 dashed border */
+  border: 2px dashed #ccc;
   width: 100%;
-  height: 100%;
-  border: 2px dashed #fff;
-  background-color: #000;
+  height: 100%; /* 부모가 min-height을 가지면 여기 100%로 채움 */
+  box-sizing: border-box;
+  position: relative; /* item들의 absolute 위치 기준 */
 }
+
 .preview-area.drag-over {
   border: 2px dashed #ff0;
 }
@@ -438,10 +439,10 @@
 
 /* 한 줄(행)을 나타내는 컨테이너 */
 .row-libraries {
-  display: flex;           /* 가로 배치 */
+  display: flex; 
   width: 100%;
-  box-sizing: border-box;
   gap: 10px;
+  box-sizing: border-box;
 }
 
 /* half-width: 반씩 차지 */
