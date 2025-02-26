@@ -7,7 +7,7 @@ function DetailInputPage({
   onSaveDetail,
   onBack
 }) {
-  const [thumbnail, setThumbnail] = useState("");
+  //const [thumbnail, setThumbnail] = useState("");
   const [courseIntro, setCourseIntro] = useState("");
 
   // 기타 정보들
@@ -16,7 +16,7 @@ function DetailInputPage({
   const [instructor, setInstructor] = useState("");
   const [sampleLesson, setSampleLesson] = useState(""); // 샘플(차시선택)
   const [difficulty, setDifficulty] = useState("");
-  const [subtitleFile, setSubtitleFile] = useState(""); // 자막 업로드
+  //const [subtitleFile, setSubtitleFile] = useState(""); // 자막 업로드
   const [price, setPrice] = useState("");
 
   // 저장
