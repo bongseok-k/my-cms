@@ -1,7 +1,7 @@
 /* ------------------------------------------------------------------
    공통 기본 스타일
 ------------------------------------------------------------------ */
-.builder-page {
+body, .builder-page, .detail-page {
   font-family: Arial, sans-serif;
   height: 100vh;
   display: flex;
@@ -9,82 +9,130 @@
   box-sizing: border-box;
 }
 
-/* 최상단 메뉴 (로고 + 메뉴 아이템 + 우측 아이콘) */
-.top-menu {
+/* 공통 버튼 스타일 */
+.button {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 0.9em;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition-duration: 0.4s;
+}
+
+.button:hover {
+  background-color: #45a049;
+  color: white;
+}
+
+.button.red {
+  background-color: #DC143C; /* Red */
+}
+
+.button.red:hover {
+  background-color: #da190b;
+}
+
+.button.blue {
+  background-color: #008CBA; /* Blue */
+}
+
+.button.blue:hover {
+  background-color: #0077a3;
+}
+
+/* 공통 레이아웃 스타일 */
+.flex {
+  display: flex;
+  align-items: center;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-space-between {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.gap-10 {
+  gap: 10px;
+}
+
+.gap-20 {
+  gap: 20px;
+}
+
+.padding-10 {
+  padding: 10px;
+}
+
+.padding-20 {
+  padding: 20px;
+}
+
+.margin-bottom-10 {
+  margin-bottom: 10px;
+}
+
+.margin-bottom-20 {
+  margin-bottom: 20px;
+}
+
+/* 최상단 메뉴 (로고 + 메뉴 아이템 + 우측 아이콘) */
+.top-menu {
+  @extend .flex-space-between;
   height: 60px; /* 고정 높이 60px */
   background-color: #F42628; /* 빨간색 계열 */
   padding: 0 20px;
-  box-sizing: border-box;
 }
 
-/* 좌측 메뉴: 로고 + 메뉴 아이템 */
-.menu-left {
-  display: flex;
-  align-items: center;
-  gap: 20px; /* 로고와 메뉴 아이템 간격 */
+.menu-left, .menu-right {
+  @extend .flex;
+  gap: 20px;
 }
 
-/* 로고 */
 .company-logo {
   height: 40px;  /* 로고 높이 */
   width: auto;
 }
 
-/* 상단 메뉴 아이템 / 아이콘을 흰색으로 */
-.top-menu-item {
+.top-menu-item, .icon {
   color: #fff;
+  cursor: pointer;
+}
+
+.top-menu-item {
   font-size: 0.75em;
   margin-right: 20px;
-  cursor: pointer;
 }
+
 .icon {
-  color: #fff;
   font-size: 1.2em;
-  cursor: pointer;
 }
 
-/* 우측 아이콘 영역 (벨, 유저) */
-.menu-right {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
-
-/* library-container: 공통/페이지 라이브러리를 좌우 50%씩 */
-.library-container {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 10px; /* 라이브러리 아래 여백 */
-}
-.half-library {
-  width: 50%;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-/* ------------------------------------------------------------------
-   서브헤더: 빌더 / 상세정보 탭 + 저장 버튼
------------------------------------------------------------------- */
+/* 서브헤더: 빌더 / 상세정보 탭 + 저장 버튼 */
 .sub-header.builder-subheader {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  @extend .flex-space-between;
   background-color: #f5f5f5;
   border-bottom: 1px solid #ccc;
   padding: 0 20px;
   height: 50px;
-  box-sizing: border-box;
 }
+
 .builder-tabs {
-  display: flex;
-  align-items: center;
+  @extend .flex;
   gap: 5px;
 }
+
 .tab-btn {
   background-color: #f5f5f5;
   border: 1px solid #ccc;
@@ -95,55 +143,80 @@
   margin-right: 2px;
   border-radius: 4px 4px 0 0;
 }
+
 .tab-btn:hover {
   background-color: #e0e0e0;
 }
+
 .tab-btn.active {
   background-color: #fff;
   border-bottom: 1px solid #fff;
   font-weight: bold;
 }
-.sub-right {
-  display: flex;
-  align-items: center;
-}
+
 .save-button {
-  background-color: #DC143C; /* 레드 계열 */
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  font-size: 1em;
-  padding: 5px 15px;
-  cursor: pointer;
+  @extend .button.red;
 }
 
-/* ------------------------------------------------------------------
-   메인 컨테이너: 왼쪽(과목/차시/페이지), 오른쪽(라이브러리+프리뷰)
------------------------------------------------------------------- */
+/* 메인 컨테이너: 왼쪽(과목/차시/페이지), 오른쪽(라이브러리+프리뷰) */
 .builder-main-container {
-  flex: 1;
-  display: flex;
-  overflow: hidden; /* 필요 시 스크롤 */
+  display: grid; /* Changed to grid layout */
+  grid-template-columns: 300px 1fr; /* 과목/차시/페이지, 라이브러리(우) */
+  grid-template-rows: auto 1fr; /*  UI 툴바 + Preview  */
+  grid-template-areas:
+    "builder-left-area builder-right-library"
+    "builder-left-area builder-right-preview";
+  gap: 20px;
+  padding: 20px;
 }
 
-/* 왼쪽 영역: 과목/차시/페이지 */
-.builder-left-side {
-  width: 30%;
-  min-width: 320px;
-  border-right: 1px solid #ccc;
+.builder-left-area {
+  grid-area: builder-left-area;
+  @extend .flex-column;
+  gap: 20px;
+}
+
+.builder-right-content {
+  grid-area: builder-right-preview;
+  display: grid; /* Changed to grid layout */
+  grid-template-rows: auto 1fr; /*  UI 툴바 + Preview  */
+  grid-template-areas:
+    "builder-ui-toolbar"
+    "preview-section";
+  gap: 20px;
+}
+
+.builder-ui-toolbar {
+  grid-area: builder-ui-toolbar;
+  width: 100%;
+  background-color: var(--lighter-gray-background);
   padding: 10px;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  overflow-y: auto;
+  border-right: 1px solid var(--border-color);
+  @extend .flex-column;
 }
 
+.preview-section {
+  grid-area: preview-section;
+  flex-grow: 1;
+  position: relative;
+  background-color: var(--white-color);
+  border: 2px dashed var(--border-color);
+  border-radius: 5px;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+}
 
-/* ------------------------------------------------------------------
-   왼쪽 영역: 과목/차시/페이지 입력, 저장버튼, 목록
------------------------------------------------------------------- */
-/* 입력/저장 패널 */
+.library-area {
+  grid-area: builder-right-library;
+}
+
+/* 왼쪽 영역: 과목/차시/페이지 입력, 저장버튼, 목록 */
+.management-area {
+  @extend .flex-column;
+  gap: 10px;
+}
+
 .management-panel {
   background-color: #fff;
   border: 1px solid #ccc;
@@ -151,16 +224,18 @@
   padding: 10px;
   box-sizing: border-box;
 }
+
 .management-panel.single-line {
-  display: flex;
-  align-items: center;
+  @extend .flex;
   gap: 10px;
   margin-bottom: 10px;
 }
+
 .section-label {
   font-weight: bold;
   min-width: 60px;
 }
+
 .management-input {
   padding: 8px;
   border: 1px solid #ccc;
@@ -168,40 +243,36 @@
   box-sizing: border-box;
   font-size: 0.9em;
 }
+
 .management-input.long-input {
   width: 200px;
 }
-.red-button {
-  background-color: #DC143C; 
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  font-size: 0.9em;
-  padding: 5px 10px;
-  cursor: pointer;
-}
-/* saved-info-panel */
+
 .saved-info-panel {
   margin-top: 10px;
 }
+
 .saved-course-name {
   font-size: 1em;
   font-weight: bold;
   margin-bottom: 5px;
 }
+
 .saved-lessons .saved-row {
-  display: flex;
-  align-items: center;
+  @extend .flex;
   margin-bottom: 5px;
 }
+
 .saved-lessons label {
   min-width: 40px;
 }
+
 .tabs-container {
-  display: flex;
+  @extend .flex;
   gap: 5px;
   margin-left: 10px;
 }
+
 .tab-button {
   padding: 5px 10px;
   border: 1px solid #ccc;
@@ -210,35 +281,35 @@
   background-color: #f9f9f9;
   cursor: pointer;
 }
+
 .tab-button.active {
   background-color: #2E8B57;
   color: #fff;
   border-color: #2E8B57;
 }
 
-/* ------------------------------------------------------------------
-   오른쪽 영역: 라이브러리 섹션 (공통/페이지) + 프리뷰
------------------------------------------------------------------- */
-/* 라이브러리 섹션 */
+/* 오른쪽 영역: 라이브러리 섹션 (공통/페이지) + 프리뷰 */
 .library-section {
   background-color: #fff;
   border: 1px solid #ccc;
   border-radius: 4px;
   padding: 10px;
-  display: flex;
-  flex-direction: column;
+  @extend .flex-column;
   box-sizing: border-box;
 }
+
 .section-header {
   font-weight: bold;
   margin-bottom: 5px;
   text-align: center;
 }
+
 .search-row {
-  display: flex;
+  @extend .flex;
   gap: 5px;
   margin-bottom: 5px;
 }
+
 .search-input {
   flex: 1;
   padding: 5px;
@@ -247,15 +318,11 @@
   box-sizing: border-box;
   font-size: 0.9em;
 }
+
 .search-button {
-  padding: 5px 10px;
-  border: none;
-  border-radius: 4px;
-  background-color: #2E8B57;
-  color: #fff;
-  cursor: pointer;
-  font-size: 0.9em;
+  @extend .button.blue;
 }
+
 .upload-area {
   background-color: #fff;
   color: #333;
@@ -266,31 +333,36 @@
   font-size: 0.9em;
   margin-bottom: 10px;
 }
+
 .upload-button {
   color: #2E8B57;
   font-weight: bold;
   cursor: pointer;
 }
+
 .uploaded-files {
   display: flex;
   flex-wrap: wrap;
   gap: 5px;
   margin-top: 5px;
 }
+
 .file-tag {
   padding: 5px;
   border: 1px solid #ccc;
   background-color: #f9f9f9;
   cursor: move;
-  display: flex;
+  @extend .flex;
   align-items: center;
   border-radius: 4px;
   box-sizing: border-box;
   font-size: 0.9em;
 }
+
 .file-tag:hover {
   background-color: #e0e0e0;
 }
+
 .used-icon {
   margin-left: 5px;
   color: #2E8B57;
@@ -298,26 +370,22 @@
 
 /* 미리보기 섹션 */
 .preview-section {
-  /* preview 섹션에 최소 높이 지정 */
-  min-height: 300px; 
-  /* 또는 고정 높이를 지정해도 됨: height: 400px; */
-  /* 배경색 정도 */
+  min-height: 300px;
   background-color: #f9f9f9;
-  /* 기타 flex나 margin 등은 원하는 대로 */
 }
 
 .preview-area {
-  /* 드래그영역에 dashed border */
   border: 2px dashed #ccc;
   width: 100%;
-  height: 100%; /* 부모가 min-height을 가지면 여기 100%로 채움 */
+  height: 100%;
   box-sizing: border-box;
-  position: relative; /* item들의 absolute 위치 기준 */
+  position: relative;
 }
 
 .preview-area.drag-over {
   border: 2px dashed #ff0;
 }
+
 .preview-placeholder {
   position: absolute;
   top: 50%;
@@ -326,6 +394,7 @@
   color: #ccc;
   text-align: center;
 }
+
 .preview-item {
   position: absolute;
   padding: 5px 10px;
@@ -339,67 +408,43 @@
 }
 
 /* 상세 입력 페이지 (DetailInputPage) */
-.detail-page {
-  padding: 20px;
-  box-sizing: border-box;
-  font-family: Arial, sans-serif;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
 .detail-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+  @extend .flex-space-between;
   background-color: #2E8B57;
   color: #fff;
   padding: 10px 20px;
   font-size: 1.5em;
   margin-bottom: 20px;
 }
-.detail-menu {
-  display: flex;
+
+.detail-menu, .detail-actions {
+  @extend .flex;
   gap: 20px;
 }
-.detail-actions {
-  display: flex;
-  gap: 10px;
-}
-.top-save-button {
-  background-color: #DC143C;
-  border: none;
-  border-radius: 4px;
-  padding: 5px 10px;
-  cursor: pointer;
+
+.top-save-button, .back-button {
+  @extend .button.red;
   font-size: 1.5em;
-  color: #fff;
 }
-.back-button {
-  background-color: #2E8B57;
-  border: none;
-  border-radius: 4px;
-  padding: 5px 10px;
-  cursor: pointer;
-  font-size: 1.5em;
-  color: #fff;
-}
+
 .detail-form {
   flex: 1;
   max-width: 800px;
   margin: 0 auto;
-  display: flex;
-  flex-direction: column;
+  @extend .flex-column;
   gap: 15px;
 }
+
 .detail-field {
-  display: flex;
-  flex-direction: column;
+  @extend .flex-column;
   gap: 5px;
 }
+
 .detail-field label {
   font-weight: bold;
   font-size: 1.2em;
 }
+
 .detail-field input,
 .detail-field textarea {
   padding: 10px;
@@ -409,15 +454,16 @@
   box-sizing: border-box;
 }
 
-/* 예: UI 요소 라이브러리(새로운 .ui-library-section 등) */
 .ui-library-section {
   margin-top: 10px;
 }
+
 .ui-elements-container {
   display: flex;
   flex-wrap: wrap;
   gap: 5px;
 }
+
 .ui-element-tag {
   padding: 5px 8px;
   border: 1px solid #ccc;
@@ -426,45 +472,39 @@
   cursor: move;
   font-size: 0.9em;
 }
+
 .ui-element-tag:hover {
   background-color: #e0e0e0;
 }
 
 .builder-right-side {
-  display: flex;           /* 세로로 3행 (Row1, Row2, Row3) */
-  flex-direction: column;
-  gap: 10px;               /* 행 간 간격 */
+  @extend .flex-column;
+  gap: 10px;
   flex: 1;
 }
 
-/* 한 줄(행)을 나타내는 컨테이너 */
 .row-libraries {
-  display: flex; 
+  @extend .flex;
   width: 100%;
   gap: 10px;
   box-sizing: border-box;
 }
 
-/* half-width: 반씩 차지 */
 .half-width {
   width: 50%;
   box-sizing: border-box;
 }
 
-/* full-width: 전체 100% 차지 */
 .full-width {
   width: 100%;
   box-sizing: border-box;
 }
 
-/* 상단부 */
 .detail-content {
   padding: 20px;
-  font-family: Arial, sans-serif;
 }
 
 .detail-header-row {
-  /* 과목명과 구분선 사이에 약간 여백 */
   margin-bottom: 10px;
 }
 
@@ -480,21 +520,21 @@
   margin: 10px 0;
 }
 
-/* 썸네일 + 소개부분 */
 .detail-top-section {
-  display: flex; /* 가로 배치 */
+  @extend .flex;
   gap: 20px;
   align-items: flex-start;
   margin-bottom: 10px;
 }
 
 .thumbnail-container {
-  width: 300px; /* 썸네일 크기 예시 */
+  width: 300px;
   height: 200px;
   overflow: hidden;
   border: 1px solid #ccc;
   border-radius: 4px;
 }
+
 .course-thumbnail {
   width: 100%;
   height: 100%;
@@ -506,7 +546,7 @@
   height: 200px;
   border: 2px dashed #ccc;
   border-radius: 4px;
-  display: flex;
+  @extend .flex;
   align-items: center;
   justify-content: center;
   color: #aaa;
@@ -515,13 +555,14 @@
 
 .intro-text-container {
   flex: 1;
-  display: flex;
-  flex-direction: column;
+  @extend .flex-column;
 }
+
 .intro-label {
   font-weight: bold;
   margin-bottom: 6px;
 }
+
 .intro-textarea {
   width: 100%;
   height: 200px;
@@ -530,27 +571,30 @@
   box-sizing: border-box;
 }
 
-/* 아래쪽 2열 레이아웃 */
 .detail-form-grid {
-  display: flex;
-  flex-direction: column;
+  @extend .flex-column;
   gap: 10px;
   margin-bottom: 20px;
 }
+
 .detail-row {
-  display: flex;
+  @extend .flex;
   align-items: center;
   gap: 10px;
 }
+
 .detail-label {
-  width: 120px; /* 왼쪽 라벨 영역 */
+  width: 120px;
 }
+
 .bold {
   font-weight: bold;
 }
+
 .detail-input {
-  flex: 1; /* 오른쪽은 가로로 꽉 채움 */
+  flex: 1;
 }
+
 .detail-input input,
 .detail-input select {
   width: 100%;
@@ -560,18 +604,10 @@
   border-radius: 4px;
 }
 
-/* 버튼들 */
 .detail-button-row {
   text-align: right;
 }
-.red-button {
-  background-color: #DC143C;
-  color: #fff;
-  border: none;
-  padding: 8px 16px;
-  border-radius: 4px;
-  cursor: pointer;
-}
+
 .gray-button {
   background-color: #ccc;
   color: #333;
@@ -589,17 +625,17 @@
   width: 100%;
   height: 100%;
   background-color: rgba(0,0,0,0.5);
-  display: flex;
+  @extend .flex;
   align-items: center;
   justify-content: center;
-  z-index: 9999; /* 최상단 레벨 */
+  z-index: 9999;
 }
 
 .import-modal-content {
   background-color: #fff;
   padding: 20px;
   border-radius: 6px;
-  width: 300px; /* 모달 가로크기 */
+  width: 300px;
   text-align: center;
 }
 
@@ -613,18 +649,10 @@
 }
 
 .close-button {
-  background: #ccc;
-  border: none;
-  border-radius: 4px;
-  padding: 6px 12px;
-  cursor: pointer;
+  @extend .button.gray;
 }
+
 .import-button {
-  margin-left: 8px; 
-  background-color: #778899; /* import버튼 색상 예시 */
-  border: none;
-  border-radius: 4px;
-  padding: 6px 10px;
-  color: #fff;
-  cursor: pointer;
+  margin-left: 8px;
+  background-color: #778899;
 }
