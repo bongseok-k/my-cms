@@ -122,8 +122,10 @@ function ContentBuilderPage() {
     // 템플릿 검색 모달 상태 (현재 미구현)
     const [showTemplateModal, setShowTemplateModal] = useState(false);
     const handleOpenTemplateModal = () => setShowTemplateModal(true);
-    const handleCloseTemplateModal = () => setShowTemplateModal(false);
+    const handleAIGenerate = () => setShowTemplateModal(false);
+    const handleCloseTemplateModal = () => setShowTemplateModal(false);    
 
+  
     // Import 모달 상태 (현재 미구현)
     const [showImportModal, setShowImportModal] = useState(false);
     const handleOpenImportModal = () => setShowImportModal(true);
@@ -526,16 +528,20 @@ function ContentBuilderPage() {
         </button>
         </div>
         <div className="sub-right">
-        <button className="template-button" onClick={handleOpenTemplateModal}>
-          템플릿
-        </button>
-        <button className="import-button" onClick={handleOpenImportModal}>
-          Import
-        </button>
-        <button className="save-button" onClick={handleSaveAll}>
-          저장
-        </button>
-        </div>
+  <button className="template-button" onClick={handleOpenTemplateModal}>
+    템플릿
+  </button>
+  <button className="import-button" onClick={handleOpenImportModal}>
+    Import
+  </button>
+  <button className="ai-button" onClick={handleAIGenerate}>
+    AI 생성
+  </button>
+  <button className="save-button" onClick={handleSaveAll}>
+    저장
+  </button>
+</div>
+
       </div>
     
       <div className="builder-main-container">
@@ -996,8 +1002,7 @@ function ContentBuilderPage() {
           </div>
         )}
       </div>
-    );
-    ;
+    );    
 }
 
 export default ContentBuilderPage;

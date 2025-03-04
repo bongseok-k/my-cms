@@ -25,7 +25,7 @@ function MainPage() {
             신규 생성
           </button>
           <button className="main-button" onClick={handlePackagingRegistration}>
-            과목 리스트2
+            과목 리스트
           </button>
         </div>
       </div>
