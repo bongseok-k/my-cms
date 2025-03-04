@@ -4,6 +4,7 @@ import LoginPage from './LoginPage';
 import MainPage from './MainPage';
 import ContentBuilderPage from './ContentBuilderPage';
 import CourseListPage from './CourseListPage';
+import LibraryMainPage from './LibraryMainPage';
 import './App.css';
 
 function App() {
@@ -13,6 +14,7 @@ function App() {
       <Route path="/main" element={<MainPage />} />
       <Route path="/content-builder" element={<ContentBuilderPage />} />
       <Route path="/course-list" element={<CourseListPage />} />
+      <Route path="/libraru-list" element={<LibraryMainPage />} />
     </Routes>
   );
 }

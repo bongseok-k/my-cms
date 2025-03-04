@@ -656,3 +656,26 @@ body, .builder-page, .detail-page {
   margin-left: 8px;
   background-color: #778899;
 }
+
+.detail-top-section-horizontal {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px; /* 필요에 따라 간격 조정 */
+}
+
+.thumbnail-container,
+.thumbnail-placeholder {
+  width: 200px; /* 썸네일 영역의 고정 너비 (예시) */
+}
+
+.intro-text-container-horizontal {
+  flex: 1; /* 남은 공간을 차지 */
+}
+
+.intro-textarea {
+  width: 100%; /* 부모 컨테이너의 전체 너비 활용 */
+  min-height: 100px;
+  padding: 5px;
+  box-sizing: border-box;
+}

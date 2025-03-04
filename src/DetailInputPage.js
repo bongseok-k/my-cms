@@ -1,9 +1,19 @@
 import React, { useState } from 'react';
 import { FaCloudUploadAlt, FaSearch } from 'react-icons/fa';
+import {
+  FaBell,
+  FaUserCircle,
+  FaFolder,
+  FaFolderOpen,
+  FaFile,
+  FaTable,
+  FaTh,
+  FaFilter
+} from "react-icons/fa";
 import './ContentBuilderPage.css';
 
 function DetailInputPage({
-  courseTitle = "과목명 없음", // 상단 볼드체로 표시할 과목명(예시)
+  courseTitle = "CMS 솔루션 , 과목명 없음", // 상단 볼드체로 표시할 과목명(예시)
   onSaveDetail,
   onBack
 }) {
@@ -35,46 +45,77 @@ function DetailInputPage({
   };
 
   return (
+    <div className="library-main-page">
+      {/* 상단 메뉴 - 기존 콘텐츠 빌더와 동일 */}
+      <header className="top-menu">
+        <div className="menu-left">
+          <img
+            src="http://hcms.hunet.co.kr/image/hunet_hcms_logo.png"
+            alt="Company Logo"
+            className="company-logo"
+          />
+          <div className="top-menu-item" onClick={() => window.location.href = "/course-list"}>과목</div>
+          <div className="top-menu-item" onClick={() => window.location.href = "/libraru-list"}>라이브러리</div>
+          <div className="top-menu-item">설정</div>
+        </div>
+        <div className="menu-right">
+          <FaBell className="icon" />
+          <FaUserCircle className="icon" />
+        </div>
+
+        
+      </header>
+      {/* 하단 버튼 (저장 / 뒤로가기) */}
+      <div className="detail-button-row">
+        <button
+          className="gray-button"
+          style={{ marginLeft: '8px' }}
+          onClick={onBack}
+        >
+          뒤로가기
+        </button>
+        <button className="red-button" onClick={handleDetailSave}>
+          저장
+        </button>        
+      </div>
     <div className="detail-content">
-      {/* 상단: 과목명 + 구분선 */}
       <div className="detail-header-row">
         <h2 className="detail-course-title">{courseTitle}</h2>
       </div>
       <hr className="detail-divider" />
 
-      {/* 썸네일 + 과목소개 섹션 */}
-      <div className="detail-top-section">
-        {thumbnail ? (
-          // 썸네일이 있으면 이미지 노출
-          <div className="thumbnail-container">
-            <img
-              src={thumbnail}
-              alt="과목썸네일"
-              className="course-thumbnail"
+        <div className="detail-top-section-horizontal">
+          {thumbnail ? (
+            // 썸네일이 있으면 이미지 노출
+            <div className="thumbnail-container">
+          <img
+            src={thumbnail}
+            alt="과목썸네일"
+            className="course-thumbnail"
+          />
+            </div>
+          ) : (
+            // 썸네일이 없으면 업로드/검색 아이콘 노출
+            <div className="thumbnail-placeholder">
+          <FaCloudUploadAlt size={32} style={{ marginRight: '10px' }} />
+          <FaSearch size={32} />
+            </div>
+          )}
+
+          <div className="intro-text-container-horizontal">
+            <label className="intro-label">과정소개</label>
+            <textarea
+          className="intro-textarea"
+          value={courseIntro}
+          onChange={(e) => setCourseIntro(e.target.value)}
+          placeholder="과정 소개를 입력하세요"
             />
           </div>
-        ) : (
-          // 썸네일이 없으면 업로드/검색 아이콘 노출
-          <div className="thumbnail-placeholder">
-            <FaCloudUploadAlt size={32} style={{ marginRight: '10px' }} />
-            <FaSearch size={32} />
-          </div>
-        )}
-
-        <div className="intro-text-container">
-          <label className="intro-label">과정소개</label>
-          <textarea
-            className="intro-textarea"
-            value={courseIntro}
-            onChange={(e) => setCourseIntro(e.target.value)}
-            placeholder="과정 소개를 입력하세요"
-          />
         </div>
-      </div>
 
-      <hr className="detail-divider" />
+        <hr className="detail-divider" />
 
-      {/* 아래쪽: 좌측 label(bold), 우측 input 형식의 2열 레이아웃 */}
+        {/* 아래쪽: 좌측 label(bold), 우측 input 형식의 2열 레이아웃 */}
       <div className="detail-form-grid">
         {/* 1) 카테고리 */}
         <div className="detail-row">
@@ -172,21 +213,8 @@ function DetailInputPage({
           </div>
         </div>
       </div>
-
-      {/* 하단 버튼 (저장 / 뒤로가기) */}
-      <div className="detail-button-row">
-        <button className="red-button" onClick={handleDetailSave}>
-          저장
-        </button>
-        <button
-          className="gray-button"
-          style={{ marginLeft: '8px' }}
-          onClick={onBack}
-        >
-          뒤로가기
-        </button>
-      </div>
     </div>
+  </div>  
   );
 }
 
