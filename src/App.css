@@ -49,6 +49,7 @@ body, html {
   border: 1px solid #ccc;
   outline: none;
   font-size: 1rem;
+  box-sizing: border-box;
 }
 
 .input-field:focus {
