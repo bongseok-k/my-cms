@@ -96,7 +96,7 @@ function CourseListPage() {
           </button>
 
           {/* 과목생성 버튼 */}
-          <button className="new-course-button" onClick={handleCreateCourse}>
+          <button className="new-course-button" onClick={() => window.location.href = "/content-builder"}>
             <FaPlus /> 과목생성
           </button>
         </div>

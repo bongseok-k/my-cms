@@ -78,7 +78,7 @@ function LibraryMainPage() {
   };
 
   return (
-    <div className="library-main-page" style={{ backgroundColor: "#f0f0f0", minHeight: "100vh" }}>
+    <div className="library-main-page" style={{ minHeight: "100vh" }}>
       {/* 상단 메뉴 - 기존 콘텐츠 빌더와 동일 */}
       <header className="top-menu">
         <div className="menu-left">
