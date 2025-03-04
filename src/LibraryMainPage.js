@@ -10,7 +10,7 @@ import {
   FaTh,
   FaFilter
 } from "react-icons/fa";
-import "./LibraryMainPage.css"; // CSS 파일에서 세련된 스타일 적용
+import "./LibraryMainPage.css"; // CSS 파일에서 추가 스타일 정의 가능
 
 function LibraryMainPage() {
   // 탭 상태: "personal" (개인 라이브러리) 또는 "all" (전체 라이브러리)
@@ -19,12 +19,13 @@ function LibraryMainPage() {
   const [selectedFolder, setSelectedFolder] = useState(null);
   // 검색어
   const [searchTerm, setSearchTerm] = useState("");
-  // 파일 목록 (실제 서비스에서는 API 호출 등으로 가져올 데이터)
+  // 파일 목록 (실제 데이터는 API 등으로 받아옴)
   const [files, setFiles] = useState([
-    { name: "video1.mp4", size: "2.5MB", type: "video", date: "2025-03-10" },
-    { name: "image1.png", size: "500KB", type: "image", date: "2025-03-20" },
-    { name: "doc1.pdf", size: "800KB", type: "document", date: "2025-03-30" },
-    { name: "audio1.mp3", size: "3MB", type: "audio", date: "2025-04-05" }
+    { name: "video1.mp4", size: "2.5MB", type: "video", date: "2025-03-10", seq: 1 },
+    { name: "image1.png", size: "500KB", type: "image", date: "2025-03-20", seq: 2 },
+    { name: "doc1.pdf", size: "800KB", type: "document", date: "2025-03-30", seq: 3 },
+    { name: "audio1.mp3", size: "3MB", type: "audio", date: "2025-04-05", seq: 4 }
+    // ... 추가 데이터
   ]);
   // 리스트 보기 모드: "grid" 또는 "table"
   const [viewMode, setViewMode] = useState("grid");
@@ -74,12 +75,13 @@ function LibraryMainPage() {
     e.preventDefault();
     setDragOver(false);
     const droppedFiles = Array.from(e.dataTransfer.files);
+    // 실제 업로드 로직 추가
     alert(`${droppedFiles.length} 개의 파일이 업로드되었습니다.`);
   };
 
   return (
-    <div className="library-main-page" style={{ minHeight: "100vh" }}>
-      {/* 상단 메뉴 - 기존 콘텐츠 빌더와 동일 */}
+    <div className="library-main-page" style={{ backgroundColor: "#f0f0f0", minHeight: "100vh" }}>
+      {/* 상단 메뉴 (콘텐츠 빌더와 동일) */}
       <header className="top-menu">
         <div className="menu-left">
           <img
@@ -103,12 +105,11 @@ function LibraryMainPage() {
         </div>
       </header>
 
-      {/* 메인 영역: 상단 메뉴 바로 아래에서 시작 */}
+      {/* 메인 영역 - 상단 메뉴 바로 아래 */}
       <div className="main-container" style={{ display: "flex", alignItems: "flex-start", paddingTop: "20px", height: "calc(100vh - 60px)" }}>
-        {/* 왼쪽 사이드바: 폴더 구조 */}
+        {/* 왼쪽 사이드바: 폴더 구조 (개인 라이브러리와 전체 라이브러리 분리) */}
         <div className="sidebar" style={{ width: "250px", borderRight: "1px solid #ddd", padding: "10px", boxSizing: "border-box" }}>
           <h3 style={{ fontSize: "1.2em", marginBottom: "10px" }}>라이브러리</h3>
-          {/* 개인 라이브러리 섹션 */}
           <div className="folder-section" style={{ marginBottom: "20px" }}>
             <h4 style={{ fontSize: "1em", borderBottom: "1px solid #ccc", paddingBottom: "5px" }}>개인 라이브러리</h4>
             {folderData.personal.map(folder => (
@@ -129,7 +130,6 @@ function LibraryMainPage() {
               </div>
             ))}
           </div>
-          {/* 전체 라이브러리 섹션 */}
           <div className="folder-section">
             <h4 style={{ fontSize: "1em", borderBottom: "1px solid #ccc", paddingBottom: "5px" }}>전체 라이브러리</h4>
             {folderData.all.map(folder => (
@@ -139,11 +139,14 @@ function LibraryMainPage() {
                 style={{
                   padding: "5px 10px",
                   cursor: "pointer",
-                  background: selectedFolder && selectedFolder.type === folder.type ? "#eaeaea" : "transparent",
+                  background: activeLibraryType === "all" && selectedFolder && selectedFolder.type === folder.type ? "#eaeaea" : "transparent",
                   borderRadius: "4px",
                   marginTop: "5px"
                 }}
-                onClick={() => setSelectedFolder(folder)}
+                onClick={() => {
+                  setActiveLibraryType("all");
+                  setSelectedFolder(folder);
+                }}
               >
                 <FaFolder style={{ marginRight: "5px" }} />
                 {folder.name}
@@ -161,7 +164,7 @@ function LibraryMainPage() {
               placeholder="검색"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              style={{ width: "200px", padding: "5px", fontSize: "0.9em" }}
+              style={{ width: "180px", padding: "5px", fontSize: "0.9em" }}
             />
             <div className="view-mode-toggle" style={{ marginLeft: "10px" }}>
               <button onClick={() => setViewMode("table")} title="테이블 보기" style={{ marginRight: "5px" }}>
@@ -172,6 +175,7 @@ function LibraryMainPage() {
               </button>
             </div>
           </div>
+
           {/* 업로드 영역 (드래그앤드랍) */}
           <div
             className="upload-area"
@@ -190,13 +194,14 @@ function LibraryMainPage() {
           >
             파일을 드래그 앤 드랍하여 업로드하세요.
           </div>
+
           {/* 파일 목록 영역 */}
           <div className="file-list">
             {viewMode === "grid" ? (
               <div className="grid-view" style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
-                {filteredFiles.map(file => (
+                {filteredFiles.map((file, idx) => (
                   <div
-                    key={file.name}
+                    key={file.name + idx}
                     className="grid-item"
                     style={{
                       width: "150px",
@@ -208,7 +213,13 @@ function LibraryMainPage() {
                     }}
                   >
                     <FaFile size={40} style={{ marginBottom: "5px" }} />
-                    <div>{file.name}</div>
+                    <div style={{ fontWeight: "bold" }}>{idx + 1}. {file.name}</div>
+                    <div style={{ fontSize: "0.8em", color: "#666" }}>
+                      {file.size} / {file.date}
+                    </div>
+                    <div style={{ fontSize: "0.8em", color: "#666" }}>
+                      유형: {file.type}
+                    </div>
                   </div>
                 ))}
               </div>
@@ -216,6 +227,7 @@ function LibraryMainPage() {
               <table className="table-view" style={{ width: "100%", borderCollapse: "collapse", fontSize: "0.9em" }}>
                 <thead>
                   <tr>
+                    <th style={{ border: "1px solid #ddd", padding: "5px" }}>순번</th>
                     <th style={{ border: "1px solid #ddd", padding: "5px" }}>파일명</th>
                     <th style={{ border: "1px solid #ddd", padding: "5px" }}>크기</th>
                     <th style={{ border: "1px solid #ddd", padding: "5px" }}>유형</th>
@@ -223,8 +235,9 @@ function LibraryMainPage() {
                   </tr>
                 </thead>
                 <tbody>
-                  {filteredFiles.map(file => (
-                    <tr key={file.name}>
+                  {filteredFiles.map((file, idx) => (
+                    <tr key={file.name + idx}>
+                      <td style={{ border: "1px solid #ddd", padding: "5px" }}>{idx + 1}</td>
                       <td style={{ border: "1px solid #ddd", padding: "5px" }}>{file.name}</td>
                       <td style={{ border: "1px solid #ddd", padding: "5px" }}>{file.size}</td>
                       <td style={{ border: "1px solid #ddd", padding: "5px" }}>{file.type}</td>

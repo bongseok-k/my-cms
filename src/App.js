@@ -14,7 +14,7 @@ function App() {
       <Route path="/main" element={<MainPage />} />
       <Route path="/content-builder" element={<ContentBuilderPage />} />
       <Route path="/course-list" element={<CourseListPage />} />
-      <Route path="/libraru-list" element={<LibraryMainPage />} />
+      <Route path="/library-list" element={<LibraryMainPage />} />
     </Routes>
   );
 }

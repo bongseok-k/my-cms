@@ -49,7 +49,7 @@ function CourseListPage() {
             className="company-logo"
           />
           <div className="top-menu-item" onClick={() => window.location.href = "/course-list"}>과목</div>
-          <div className="top-menu-item" onClick={() => window.location.href = "/libraru-list"}>라이브러리</div>
+          <div className="top-menu-item" onClick={() => window.location.href = "/library-list"}>라이브러리</div>
           <div className="top-menu-item">설정</div>
         </div>
         <div className="menu-right">
