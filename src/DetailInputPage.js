@@ -99,6 +99,15 @@ function DetailInputPage({
             <div className="thumbnail-placeholder">
           <FaCloudUploadAlt size={32} style={{ marginRight: '10px' }} />
           <FaSearch size={32} />
+                {/* 자동 추출 버튼 추가 */}
+      <button
+        className="auto-extract-button"
+        onClick={() => window.location.href = "/thumbnail-generator"}
+        style={{ marginLeft: '10px', padding: '4px 8px', fontSize: "0.9em", border: "none", borderRadius: "4px", backgroundColor: "#0072ff", color: "#fff" }}
+      >
+        자동 추출
+      </button>
+      
             </div>
           )}
 

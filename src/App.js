@@ -5,6 +5,7 @@ import MainPage from './MainPage';
 import ContentBuilderPage from './ContentBuilderPage';
 import CourseListPage from './CourseListPage';
 import LibraryMainPage from './LibraryMainPage';
+import ThumbnailGenerator from './ThumbnailGenerator';
 import './App.css';
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
       <Route path="/content-builder" element={<ContentBuilderPage />} />
       <Route path="/course-list" element={<CourseListPage />} />
       <Route path="/library-list" element={<LibraryMainPage />} />
+      <Route path="/thumbnail-generator" element={<ThumbnailGenerator />} />
     </Routes>
   );
 }
