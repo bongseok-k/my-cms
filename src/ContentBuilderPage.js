@@ -105,6 +105,8 @@ function ContentBuilderPage() {
       setHoveredFile(null);
     };
 
+    // 상태 변수 추가 (컴포넌트 상단 부분)
+    const [previewMode, setPreviewMode] = useState("uiCustom"); // 기본값: "uiCustom"
 
     // UI 라이브러리 (아이콘으로 변경)
     const [uiElements] = useState([
@@ -840,33 +842,51 @@ function ContentBuilderPage() {
             )}
 
     
-            {/* 하단 영역: UI 툴바와 PREVIEW 영역 */}
+            {/* 하단 영역: 모드 선택 및 UI 툴바 / PREVIEW 영역 */}
             <div className="builder-combined-area" style={{ display: "flex", flexDirection: "row" }}>
-              {/* 좌측: UI 툴바 */}
-              <div className="builder-ui-toolbar" style={{ width: "80px" }}>
-                <div
-                  className="ui-library-section library-section"
-                  style={{ border: "none", padding: "0", backgroundColor: "transparent" }}
+              {/* 모드 선택 버튼 (미리보기 영역 상단 중앙) */}
+              <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)", zIndex: 20 }}>
+                <button 
+                  onClick={() => setPreviewMode("general")}
+                  style={{ padding: "5px 10px", marginRight: "5px", background: previewMode === "general" ? "#0072ff" : "#ccc", color: "#fff", border: "none", borderRadius: "4px" }}
                 >
+                  일반
+                </button>
+                <button 
+                  onClick={() => setPreviewMode("uiCustom")}
+                  style={{ padding: "5px 10px", background: previewMode === "uiCustom" ? "#0072ff" : "#ccc", color: "#fff", border: "none", borderRadius: "4px" }}
+                >
+                  UI 커스텀
+                </button>
+              </div>
+
+              {/* 좌측: UI 툴바 – previewMode가 "uiCustom"인 경우에만 표시 */}
+              {previewMode === "uiCustom" && (
+                <div className="builder-ui-toolbar" style={{ width: "80px" }}>
                   <div
-                    className="ui-elements-container"
-                    style={{ display: "flex", flexDirection: "column", gap: "10px", padding: "0" }}
+                    className="ui-library-section library-section"
+                    style={{ border: "none", padding: "0", backgroundColor: "transparent" }}
                   >
-                    {uiElements.map((elem, idx) => (
-                      <div
-                        key={idx}
-                        className="ui-element-tag"
-                        draggable
-                        onDragStart={(e) => handleUiElementDragStart(e, elem)}
-                        title={elem.name}
-                      >
-                        <elem.icon className="ui-element-icon" />
-                      </div>
-                    ))}
+                    <div
+                      className="ui-elements-container"
+                      style={{ display: "flex", flexDirection: "column", gap: "10px", padding: "0" }}
+                    >
+                      {uiElements.map((elem, idx) => (
+                        <div
+                          key={idx}
+                          className="ui-element-tag"
+                          draggable
+                          onDragStart={(e) => handleUiElementDragStart(e, elem)}
+                          title={elem.name}
+                        >
+                          <elem.icon className="ui-element-icon" />
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </div>
-              </div>
-    
+              )}
+
               {/* 우측: PREVIEW 영역 */}
               <div
                 className="preview-section full-width"
@@ -895,7 +915,7 @@ function ContentBuilderPage() {
                 >
                   <FaChevronLeft />
                 </button>
-    
+
                 {/* 미리보기 영역 */}
                 <div
                   className={`preview-area ${isPreviewDragOver ? "drag-over" : ""}`}
@@ -930,7 +950,7 @@ function ContentBuilderPage() {
                     </div>
                   ))}
                 </div>
-    
+
                 {/* 우측 이동 버튼 */}
                 <button
                   className="preview-nav right"
@@ -950,6 +970,8 @@ function ContentBuilderPage() {
                 </button>
               </div>
             </div>
+
+
           </div>
         </div>
     
