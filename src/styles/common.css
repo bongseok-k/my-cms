@@ -20,8 +20,8 @@
   /* 상단 메뉴 (공통) */
   .top-menu {
     display: flex;
-    background-color: #2E8B57;
-    color: #fff;
+    background-color: #ffffff;
+    color: #F42628;
     height: 10vh;
     align-items: center;
     padding: 0 20px;

@@ -91,7 +91,7 @@ body, .builder-page, .detail-page {
 .top-menu {
   @extend .flex-space-between;
   height: 60px; /* 고정 높이 60px */
-  background-color: #F42628; /* 빨간색 계열 */
+  background-color: #ffffff; /* 빨간색 계열 */
   padding: 0 20px;
 }
 
@@ -106,7 +106,7 @@ body, .builder-page, .detail-page {
 }
 
 .top-menu-item, .icon {
-  color: #fff;
+  color: #000000;
   cursor: pointer;
 }
 
@@ -268,6 +268,8 @@ body, .builder-page, .detail-page {
 }
 
 .tab-button {
+  display: inline-block;  /* 내용에 맞춰서 너비가 결정됨 */
+  width: auto;            /* 자동 너비 */
   padding: 5px 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -277,10 +279,11 @@ body, .builder-page, .detail-page {
 }
 
 .tab-button.active {
-  background-color: #2E8B57;
+  background-color: #ccc;
   color: #fff;
-  border-color: #2E8B57;
+  border-color: #ccc;
 }
+
 
 /* 오른쪽 영역: 라이브러리 섹션 (공통/페이지) + 프리뷰 */
 .library-section {

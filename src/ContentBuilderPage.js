@@ -325,19 +325,19 @@ function ContentBuilderPage() {
     const isFileUsed = file => previewItems.some(item => item.name === file.name);
     // 확장자별 색상
     const getColorByExtension = extension => {
-        const mapping = {
-            mp4: "#DC143C",
-            mp3: "#2E8B57",
-            jpg: "#4682B4",
-            jpeg: "#4682B4",
-            png: "#4682B4",
-            gif: "#4682B4",
-            quiz: "#6f42c1",
-            article: "#fd7e14",
-            pdf: "#696969"
-        };
-        return mapping[extension] || "#777";
-    };
+      const mapping = {
+          mp4: "#DC143C",
+          mp3: "#2E8B57",
+          jpg: "#4682B4",
+          jpeg: "#4682B4",
+          png: "#4682B4",
+          gif: "#4682B4",
+          quiz: "#6f42c1",
+          article: "#fd7e14",
+          pdf: "#696969"
+      };
+      return mapping[extension] || "#777";
+  };
 
 
     // 과목/차시/페이지 저장
@@ -500,7 +500,7 @@ function ContentBuilderPage() {
       <header className="top-menu">
         <div className="menu-left">
         <img
-          src="http://hcms.hunet.co.kr/image/hunet_hcms_logo.png"
+          src="https://img.hunet.co.kr/hunet/main_v3/layout_header.svg"
           alt="Company Logo"
           className="company-logo"
         />
@@ -599,9 +599,6 @@ function ContentBuilderPage() {
           </button>
           </div>
           <div className="management-panel saved-info-panel" style={{ marginBottom: "0" }}>
-          <h4 className="saved-course-name">
-            {savedCourseName ? `과목명: ${savedCourseName}` : "과목명이 없습니다."}
-          </h4>
           <div className="saved-lessons">
             <div className="saved-row">
             <label>차시:</label>
@@ -635,23 +632,8 @@ function ContentBuilderPage() {
             </div>
             </div>
           </div>
-          </div>
-        </div>
-        </div>
-    
-        {/* 우측 영역: 라이브러리 리스트 (노출 부분) */}
-        <div className="builder-right-content">
-        <div
-          className="library-section full-width"
-          style={{ width: "100%", marginBottom: "0" }}
-        >
           <div className="section-header">통합 라이브러리</div>
-    
-          {/* 전체 영역을 좌우로 나누는 flex 컨테이너 */}
-          <div style={{ display: "flex", flexDirection: "row", gap: "10px" }}>
-          {/* 좌측 영역 (80%) - 파일 목록 등 */}
-          <div style={{ flex: 8 }}>
-            <div className="search-row">
+          <div className="search-row">
             <div className="search-input-group">
               <input
               type="text"
@@ -722,6 +704,25 @@ function ContentBuilderPage() {
               style={{ display: "none" }}
             />
             </div>
+
+
+          </div>
+        </div>
+        </div>
+    
+        {/* 우측 영역: 라이브러리 리스트 (노출 부분) */}
+        <div className="builder-right-content">
+        <div
+          className="library-section full-width"
+          style={{ width: "100%", marginBottom: "0" }}
+        >
+          
+    
+          {/* 전체 영역을 좌우로 나누는 flex 컨테이너 */}
+          <div style={{ display: "flex", flexDirection: "row", gap: "10px" }}>
+          {/* 좌측 영역 (80%) - 파일 목록 등 */}
+          <div style={{ flex: 8 }}>
+
     
             {/* 파일 목록 (Grid Layout) */}
             <div className="uploaded-files grid-layout">
@@ -729,14 +730,14 @@ function ContentBuilderPage() {
               <div
               key={i}
               className={`file-tag grid-item ${selectedFile === file ? "selected" : ""}`}
-              style={{
-                backgroundColor: getColorByExtension(file.extension),
-                fontWeight: isFileUsed(file) ? "bold" : "normal",
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-                padding: "4px 8px",
-              }}
+                style={{
+                    borderBottom: `3px solid ${getColorByExtension(file.extension)}`,
+                    fontWeight: isFileUsed(file) ? "bold" : "normal",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                    padding: "4px 8px",
+                }}
               draggable
               onDragStart={(e) => handleLibraryDragStart(e, file)}
               onClick={() => setSelectedFile(file)}
@@ -842,34 +843,126 @@ function ContentBuilderPage() {
             )}
 
     
-            {/* 하단 영역: 모드 선택 및 UI 툴바 / PREVIEW 영역 */}
-            <div className="builder-combined-area" style={{ display: "flex", flexDirection: "row" }}>
-              {/* 모드 선택 버튼 (미리보기 영역 상단 중앙) */}
-              <div style={{ position: "absolute", top: "10px", left: "50%", transform: "translateX(-50%)", zIndex: 20 }}>
-                <button 
-                  onClick={() => setPreviewMode("general")}
-                  style={{ padding: "5px 10px", marginRight: "5px", background: previewMode === "general" ? "#0072ff" : "#ccc", color: "#fff", border: "none", borderRadius: "4px" }}
-                >
-                  일반
-                </button>
-                <button 
-                  onClick={() => setPreviewMode("uiCustom")}
-                  style={{ padding: "5px 10px", background: previewMode === "uiCustom" ? "#0072ff" : "#ccc", color: "#fff", border: "none", borderRadius: "4px" }}
-                >
-                  UI 커스텀
-                </button>
-              </div>
+                <div className="builder-combined-area" style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "20px", width: "100%" }}>
+                  {/* 상단: 모드 선택 버튼 */}
+                  <div style={{ display: "flex", gap: "10px" }}>
+                    <button 
+                      onClick={() => setPreviewMode("general")}
+                      style={{ 
+                        padding: "5px 10px", 
+                        background: previewMode === "general" ? "#0072ff" : "#ccc", 
+                        color: "#fff", 
+                        border: "none", 
+                        borderRadius: "4px" 
+                      }}
+                    >
+                      일반
+                    </button>
+                    <button 
+                      onClick={() => setPreviewMode("uiCustom")}
+                      style={{ 
+                        padding: "5px 10px", 
+                        background: previewMode === "uiCustom" ? "#0072ff" : "#ccc", 
+                        color: "#fff", 
+                        border: "none", 
+                        borderRadius: "4px" 
+                      }}
+                    >
+                      UI 커스텀
+                    </button>
+                  </div>
 
-              {/* 좌측: UI 툴바 – previewMode가 "uiCustom"인 경우에만 표시 */}
-              {previewMode === "uiCustom" && (
-                <div className="builder-ui-toolbar" style={{ width: "80px" }}>
-                  <div
-                    className="ui-library-section library-section"
-                    style={{ border: "none", padding: "0", backgroundColor: "transparent" }}
-                  >
-                    <div
-                      className="ui-elements-container"
-                      style={{ display: "flex", flexDirection: "column", gap: "10px", padding: "0" }}
+                  {/* 중앙: 과목명 표시 (볼드, 크게) */}
+                  <h2 style={{ fontWeight: "bold", fontSize: "1.2em", margin: "0" }}>
+                    {savedCourseName ? `과목명: ${savedCourseName}` : "과목명을 입력해주세요."}
+                  </h2>
+                  
+                  <div style={{ width: "1280px", height: "546px", border: "1px solid #ccc", display: "flex" }}>
+  {/* 왼쪽 영역: 텍스트 정보 (25%) */}
+      <div
+      style={{
+        width: "25%",
+        height: "100%",
+        borderRight: "2px solid #ccc",
+        padding: "10px",
+        boxSizing: "border-box",
+        backgroundColor: "#f9f9f9"
+      }}
+    >
+      {/* 트리 구조: 차시와 페이지 목록 */}
+      <ul style={{ listStyle: "none", paddingLeft: "0", margin: "0" }}>
+        {lessons.map(lesson => (
+          <li key={lesson.id} style={{ marginBottom: "15px" }}>
+            <div style={{ fontWeight: "bold", fontSize: "1.2em", marginBottom: "5px" }}>
+              {lesson.name}
+            </div>
+            {lesson.pages && lesson.pages.length > 0 && (
+              <ul style={{ listStyle: "disc", paddingLeft: "20px", margin: "0" }}>
+                {lesson.pages.map(page => (
+                  <li key={page.id} style={{ fontSize: "1em", marginBottom: "3px" }}>
+                    {page.name}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </li>
+        ))}
+      </ul>
+    </div>
+
+
+  {/* 오른쪽 영역: 미리보기 영역 (75%) */}
+  <div
+    className="preview-section"
+    style={{
+      width: "75%",
+      height: "100%",
+      position: "relative",
+      overflow: "hidden",
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+      backgroundImage: bgUrl ? `url(${bgUrl})` : "none"
+    }}
+    onDrop={handlePreviewDrop}
+    onDragOver={handlePreviewDragOver}
+    onDragLeave={handlePreviewDragLeave}
+    onMouseMove={handlePreviewMouseMove}
+    onMouseUp={handlePreviewMouseUp}
+  >
+    {previewItems.length === 0 ? (
+      <div
+        style={{
+          width: "100%",
+          height: "100%",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          color: "#999"
+        }}
+      >
+        라이브러리 또는 UI요소를 드래그하세요.
+      </div>
+    ) : (
+      previewItems.map((item, idx) => (
+        <div
+          key={idx}
+          className="preview-item"
+          style={{ position: "absolute", left: item.x, top: item.y, cursor: "move" }}
+          onMouseDown={(e) => handleMouseDownItem(e, idx)}
+        >
+          {renderPreviewItem(item, idx)}
+        </div>
+      ))
+    )}
+  </div>
+</div>
+
+
+                  {/* UI 요소 (previewMode가 "uiCustom"일 경우, 가로 정렬) */}
+                  {previewMode === "uiCustom" && (
+                    <div 
+                      className="ui-elements-container" 
+                      style={{ display: "flex", flexDirection: "row", gap: "10px", justifyContent: "center" }}
                     >
                       {uiElements.map((elem, idx) => (
                         <div
@@ -878,98 +971,15 @@ function ContentBuilderPage() {
                           draggable
                           onDragStart={(e) => handleUiElementDragStart(e, elem)}
                           title={elem.name}
+                          style={{ cursor: "move" }}
                         >
-                          <elem.icon className="ui-element-icon" />
+                          <elem.icon style={{ fontSize: "1.5em" }} />
                         </div>
                       ))}
                     </div>
-                  </div>
-                </div>
-              )}
-
-              {/* 우측: PREVIEW 영역 */}
-              <div
-                className="preview-section full-width"
-                style={{
-                  position: "relative",
-                  flex: 1,
-                  display: "flex",
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
-              >
-                {/* 좌측 이동 버튼 */}
-                <button
-                  className="preview-nav left"
-                  onClick={handlePreviewNavLeft}
-                  style={{
-                    position: "absolute",
-                    left: "10px",
-                    top: "50%",
-                    transform: "translateY(-50%)",
-                    fontSize: "2em",
-                    width: "40px",
-                    height: "40px",
-                    zIndex: 10,
-                  }}
-                >
-                  <FaChevronLeft />
-                </button>
-
-                {/* 미리보기 영역 */}
-                <div
-                  className={`preview-area ${isPreviewDragOver ? "drag-over" : ""}`}
-                  style={{
-                    width: "970px",
-                    height: "546px",
-                    position: "relative",
-                    overflow: "hidden",
-                    backgroundSize: "cover",
-                    backgroundPosition: "center",
-                    backgroundImage: bgUrl ? `url(${bgUrl})` : "none",
-                  }}
-                  onDrop={handlePreviewDrop}
-                  onDragOver={handlePreviewDragOver}
-                  onDragLeave={handlePreviewDragLeave}
-                  onMouseMove={handlePreviewMouseMove}
-                  onMouseUp={handlePreviewMouseUp}
-                >
-                  {previewItems.length === 0 && (
-                    <p className="preview-placeholder">
-                      파일 또는 UI요소를 드래그하세요.
-                    </p>
                   )}
-                  {previewItems.map((item, idx) => (
-                    <div
-                      key={idx}
-                      className="preview-item"
-                      style={{ left: item.x, top: item.y, cursor: "move" }}
-                      onMouseDown={(e) => handleMouseDownItem(e, idx)}
-                    >
-                      {renderPreviewItem(item, idx)}
-                    </div>
-                  ))}
                 </div>
 
-                {/* 우측 이동 버튼 */}
-                <button
-                  className="preview-nav right"
-                  onClick={handlePreviewNavRight}
-                  style={{
-                    position: "absolute",
-                    right: "10px",
-                    top: "50%",
-                    transform: "translateY(-50%)",
-                    fontSize: "2em",
-                    width: "40px",
-                    height: "40px",
-                    zIndex: 10,
-                  }}
-                >
-                  <FaChevronRight />
-                </button>
-              </div>
-            </div>
 
 
           </div>

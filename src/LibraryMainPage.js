@@ -85,7 +85,7 @@ function LibraryMainPage() {
       <header className="top-menu">
         <div className="menu-left">
           <img
-            src="http://hcms.hunet.co.kr/image/hunet_hcms_logo.png"
+            src="https://img.hunet.co.kr/hunet/main_v3/layout_header.svg"
             alt="Company Logo"
             className="company-logo"
           />

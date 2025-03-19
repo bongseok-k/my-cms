@@ -44,7 +44,7 @@ function CourseListPage() {
         <div className="menu-left">
           {/* 로고 삽입 */}
           <img 
-            src="http://hcms.hunet.co.kr/image/hunet_hcms_logo.png" 
+            src="https://img.hunet.co.kr/hunet/main_v3/layout_header.svg"
             alt="Company Logo" 
             className="company-logo"
           />
