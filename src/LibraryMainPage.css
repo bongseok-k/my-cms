@@ -1,0 +1,123 @@
+/* Styles for the library main page */
+
+.library-main-page {
+  background-color: #f0f0f0;
+  min-height: 100vh;
+}
+
+/* Top menu layout - reused across pages */
+.top-menu {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 60px;
+  background-color: #ffffff;
+  padding: 0 20px;
+  font-size: 1.5em;
+}
+
+.menu-left {
+  display: flex;
+  gap: 20px;
+}
+
+.company-logo {
+  height: 40px;
+  width: auto;
+  margin-right: 20px;
+}
+
+.top-menu-item {
+  font-size: 0.75em;
+  margin-right: 20px;
+  cursor: pointer;
+}
+
+.menu-right {
+  display: flex;
+  gap: 15px;
+}
+
+.icon {
+  cursor: pointer;
+}
+
+/* Layout for the main content */
+.main-container {
+  display: flex;
+  align-items: flex-start;
+  padding-top: 20px;
+  height: calc(100vh - 60px);
+}
+
+.sidebar {
+  width: 250px;
+  border-right: 1px solid #ddd;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.library-tabs {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.folder-item {
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: 4px;
+  margin-top: 5px;
+}
+
+.content-area {
+  flex: 1;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.upload-area {
+  border: 2px dashed #ccc;
+  padding: 20px;
+  text-align: center;
+  margin-bottom: 10px;
+  border-radius: 4px;
+  color: #777;
+  font-size: 0.9em;
+}
+
+.grid-view {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.grid-item {
+  width: 150px;
+  border: 1px solid #ddd;
+  padding: 5px;
+  text-align: center;
+  border-radius: 4px;
+  font-size: 0.9em;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.table-view {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9em;
+  background: #fff;
+}
+
+.table-view th,
+.table-view td {
+  border: 1px solid #ddd;
+  padding: 5px;
+}
