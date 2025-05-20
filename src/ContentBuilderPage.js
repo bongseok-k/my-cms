@@ -21,6 +21,12 @@ import DetailInputPage from './DetailInputPage';
 import CourseListPage from './CourseListPage';
 import LibraryMainPage from './LibraryMainPage'; // LibraryMainPage 임포트
 import './ContentBuilderPage.css'; // CSS import
+import ManagementPanel from "./builder/ManagementPanel";
+import LibraryList from "./builder/LibraryList";
+import PreviewArea from "./builder/PreviewArea";
+import TemplateModal from "./builder/TemplateModal";
+import ImportModal from "./builder/ImportModal";
+import PropModal from "./builder/PropModal";
 
 
 // UI 요소 아이콘 매핑
@@ -548,490 +554,79 @@ function ContentBuilderPage() {
     
       <div className="builder-main-container">
         {/* 좌측 영역 (과목/차시/페이지 관리) */}
-        <div className="builder-left-area">
-        <div className="management-area">
-          <div className="management-panel single-line">
-          <label className="section-label">과목명:</label>
-          <input
-            type="text"
-            placeholder="과목명 입력"
-            value={courseName}
-            onChange={(e) => setCourseName(e.target.value)}
-            className="management-input long-input"
-          />
-          <button
-            onClick={handleSaveCourse}
-            className="management-save-button red-button"
-          >
-            저장
-          </button>
-          </div>
-          <div className="management-panel single-line">
-          <label className="section-label">차시명:</label>
-          <input
-            type="text"
-            placeholder="차시명 입력 (미입력 시 자동생성)"
-            value={newLessonName}
-            onChange={(e) => setNewLessonName(e.target.value)}
-            className="management-input long-input"
-          />
-          <button
-            onClick={handleSaveLesson}
-            className="management-save-button red-button"
-          >
-            저장
-          </button>
-          </div>
-          <div className="management-panel single-line">
-          <label className="section-label">페이지명:</label>
-          <input
-            type="text"
-            placeholder="페이지명 입력 (미입력 시 자동생성)"
-            value={newPageName}
-            onChange={(e) => setPageName(e.target.value)}
-            className="management-input long-input"
-          />
-          <button
-            onClick={handleSavePage}
-            className="management-save-button red-button"
-          >
-            저장
-          </button>
-          </div>
-          <div className="management-panel saved-info-panel" style={{ marginBottom: "0" }}>
-          <div className="saved-lessons">
-            <div className="saved-row">
-            <label>차시:</label>
-            <div className="tabs-container">
-              {lessons.map((lesson) => (
-              <div
-                key={lesson.id}
-                className={`tab-button ${currentLessonId === lesson.id ? "active" : ""}`}
-                onClick={() => {
-                setCurrentLessonId(lesson.id);
-                setCurrentPageId(lesson.pages[0].id);
-                }}
-              >
-                {lesson.name}
-              </div>
-              ))}
-            </div>
-            </div>
-            <div className="saved-row">
-            <label>페이지:</label>
-            <div className="tabs-container">
-              {currentLesson.pages.map((page) => (
-              <div
-                key={page.id}
-                className={`tab-button ${currentPageId === page.id ? "active" : ""}`}
-                onClick={() => setCurrentPageId(page.id)}
-              >
-                {page.name}
-              </div>
-              ))}
-            </div>
-            </div>
-          </div>
-          <div className="section-header">통합 라이브러리</div>
-          <div className="search-row">
-            <div className="search-input-group">
-              <input
-              type="text"
-              placeholder="검색어 입력"
-              className="search-input"
-              value={librarySearchTerm}
-              onChange={(e) => setLibrarySearchTerm(e.target.value)}
-              list="autocomplete-suggestions"
-              />
-              <datalist id="autocomplete-suggestions">
-              {getAutocompleteSuggestions.map((suggestion, index) => (
-                <option key={index} value={suggestion} />
-              ))}
-              </datalist>
-              <FaSearch className="search-icon" />
-              <button className="search-button">
-              <FaFilter /> 필터
-              </button>
-            </div>
-            </div>
-    
-            {/* 카테고리 필터 */}
-            <div className="category-filter">
-            <button
-              className={`category-button ${libraryCategoryFilter === "all" ? "active" : ""}`}
-              onClick={() => setLibraryCategoryFilter("all")}
-            >
-              전체
-            </button>
-            <button
-              className={`category-button ${libraryCategoryFilter === "video" ? "active" : ""}`}
-              onClick={() => setLibraryCategoryFilter("video")}
-            >
-              비디오
-            </button>
-            <button
-              className={`category-button ${libraryCategoryFilter === "image" ? "active" : ""}`}
-              onClick={() => setLibraryCategoryFilter("image")}
-            >
-              이미지
-            </button>
-            <button
-              className={`category-button ${libraryCategoryFilter === "document" ? "active" : ""}`}
-              onClick={() => setLibraryCategoryFilter("document")}
-            >
-              문서
-            </button>
-            <button
-              className={`category-button ${libraryCategoryFilter === "audio" ? "active" : ""}`}
-              onClick={() => setLibraryCategoryFilter("audio")}
-            >
-              오디오
-            </button>
-            </div>
-    
-            <div className="upload-area">
-            <p>
-              업로드: 드래그앤드롭 또는{" "}
-              <label htmlFor="libraryFileInput" className="upload-button">
-              파일 선택
-              </label>
-            </p>
-            <input
-              type="file"
-              multiple
-              onChange={handleLibraryFileSelect}
-              id="libraryFileInput"
-              style={{ display: "none" }}
-            />
-            </div>
-
-
-          </div>
-        </div>
-        </div>
-    
-        {/* 우측 영역: 라이브러리 리스트 (노출 부분) */}
+        <ManagementPanel
+          courseName={courseName}
+          setCourseName={setCourseName}
+          handleSaveCourse={handleSaveCourse}
+          newLessonName={newLessonName}
+          setNewLessonName={setNewLessonName}
+          handleSaveLesson={handleSaveLesson}
+          newPageName={newPageName}
+          setPageName={setPageName}
+          handleSavePage={handleSavePage}
+          lessons={lessons}
+          currentLessonId={currentLessonId}
+          setCurrentLessonId={setCurrentLessonId}
+          currentPageId={currentPageId}
+          setCurrentPageId={setCurrentPageId}
+          currentLesson={currentLesson}
+          librarySearchTerm={librarySearchTerm}
+          setLibrarySearchTerm={setLibrarySearchTerm}
+          libraryCategoryFilter={libraryCategoryFilter}
+          setLibraryCategoryFilter={setLibraryCategoryFilter}
+          getAutocompleteSuggestions={getAutocompleteSuggestions}
+          handleLibraryFileSelect={handleLibraryFileSelect}
+        />
         <div className="builder-right-content">
-        <div
-          className="library-section full-width"
-          style={{ width: "100%", marginBottom: "0" }}
-        >
-          
-    
-          {/* 전체 영역을 좌우로 나누는 flex 컨테이너 */}
-          <div style={{ display: "flex", flexDirection: "row", gap: "10px" }}>
-          {/* 좌측 영역 (80%) - 파일 목록 등 */}
-          <div style={{ flex: 8 }}>
-
-    
-            {/* 파일 목록 (Grid Layout) */}
-            <div className="uploaded-files grid-layout">
-            {paginatedFiles.map((file, i) => (
-              <div
-              key={i}
-              className={`file-tag grid-item ${selectedFile === file ? "selected" : ""}`}
-                style={{
-                    borderBottom: `3px solid ${getColorByExtension(file.extension)}`,
-                    fontWeight: isFileUsed(file) ? "bold" : "normal",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "8px",
-                    padding: "4px 8px",
-                }}
-              draggable
-              onDragStart={(e) => handleLibraryDragStart(e, file)}
-              onClick={() => setSelectedFile(file)}
-              onMouseEnter={(e) => handleFileMouseEnter(e, file)}
-              onMouseLeave={handleFileMouseLeave}
-              >
-              <div className="file-icon">
-                {file.type === "video" && <FaPlayCircle />}
-                {file.type === "image" && <FaImage />}
-                {file.type === "audio" && <FaPlayCircle />}
-                {file.type === "document" && <FaFileAlt />}
-                {file.type === "unknown" && <FaFileAlt />}
-              </div>
-              <span className="file-name">{file.name}</span>
-              {isFileUsed(file) && <FaCheck className="used-icon" />}
-              </div>
-            ))}
-            </div>
-    
-            {/* 페이지 네이션 */}
-            <div className="pagination">
-            <button
-              onClick={() =>
-              setCurrentPageNum((pageNum) => Math.max(pageNum - 1, 1))
-              }
-              disabled={currentPageNum === 1}
-            >
-              <FaChevronLeft />
-            </button>
-            <span>
-              페이지 {currentPageNum} /{" "}
-              {Math.ceil(filteredLibraryFiles.length / filesPerPage)}
-            </span>
-            <button
-              onClick={() =>
-              setCurrentPageNum((pageNum) =>
-                Math.min(
-                pageNum + 1,
-                Math.ceil(filteredLibraryFiles.length / filesPerPage)
-                )
-              )
-              }
-              disabled={
-              currentPageNum === Math.ceil(filteredLibraryFiles.length / filesPerPage) ||
-              Math.ceil(filteredLibraryFiles.length / filesPerPage) === 0
-              }
-            >
-              <FaChevronRight />
-            </button>
-            </div>
-          </div>
-    
-          {/* 우측 영역 (20%) - 선택된 파일 미리보기는 제거하고, hover 미리보기 팝업만 유지 */}
-          </div>
+          <LibraryList
+            paginatedFiles={paginatedFiles}
+            selectedFile={selectedFile}
+            setSelectedFile={setSelectedFile}
+            getColorByExtension={getColorByExtension}
+            isFileUsed={isFileUsed}
+            handleLibraryDragStart={handleLibraryDragStart}
+            handleFileMouseEnter={handleFileMouseEnter}
+            handleFileMouseLeave={handleFileMouseLeave}
+            currentPageNum={currentPageNum}
+            setCurrentPageNum={setCurrentPageNum}
+            filteredLibraryFiles={filteredLibraryFiles}
+            filesPerPage={filesPerPage}
+            hoveredFile={hoveredFile}
+            hoverPos={hoverPos}
+          />
+          <PreviewArea
+            previewMode={previewMode}
+            setPreviewMode={setPreviewMode}
+            savedCourseName={savedCourseName}
+            lessons={lessons}
+            previewItems={previewItems}
+            bgUrl={bgUrl}
+            handlePreviewDrop={handlePreviewDrop}
+            handlePreviewDragOver={handlePreviewDragOver}
+            handlePreviewDragLeave={handlePreviewDragLeave}
+            handlePreviewMouseMove={handlePreviewMouseMove}
+            handlePreviewMouseUp={handlePreviewMouseUp}
+            handleMouseDownItem={handleMouseDownItem}
+            renderPreviewItem={renderPreviewItem}
+            uiElements={uiElements}
+            handleUiElementDragStart={handleUiElementDragStart}
+          />
         </div>
     
-        {/* 상세 미리보기 팝업 (마우스 오버 시) */}
-        {hoveredFile && (
-          <div
-          className="hover-preview-popup"
-          style={{
-            position: "absolute",
-            top: hoverPos.y,
-            left: hoverPos.x,
-            width: "400px",
-            background: "#fff",
-            border: "1px solid #ccc",
-            borderRadius: "4px",
-            boxShadow: "0 0 10px rgba(0,0,0,0.2)",
-            padding: "10px",
-            zIndex: 100,
-          }}
-          >
-          <h4>{hoveredFile.name}</h4>
-          <div style={{ width: "100%", height: "200px" }}>
-            {hoveredFile.type === "image" && (
-            <img
-              src={`https://vod.cdn.hunet.co.kr/Library/HCMS/kobongseok/PNG/${hoveredFile.name}`}
-              alt={hoveredFile.name}
-              style={{ width: "100%", height: "100%", objectFit: "cover" }}
-            />
-            )}
-            {hoveredFile.type === "video" && (
-            <video
-                      src={`https://vod.cdn.hunet.co.kr/Library/HCMS/kobongseok/MP4/${hoveredFile.name}`}
-                      controls
-                      style={{ width: "100%", height: "100%" }}
-                    />
-                  )}
-                  {/* 다른 파일 타입에 대한 미리보기 처리 추가 가능 */}
-                </div>
-                <div
-                  className="file-details"
-                  style={{ marginTop: "10px", fontSize: "0.9em", lineHeight: "1.4" }}
-                >
-                  <p>파일명: {hoveredFile.name}</p>
-                  <p>파일 크기: {hoveredFile.size}</p>
-                  <p>확장자: {hoveredFile.extension}</p>
-                  <p>타입: {hoveredFile.type}</p>
-                  <p>업로드 날짜: {hoveredFile.date}</p>
-                </div>
-              </div>
-            )}
-
-    
-                <div className="builder-combined-area" style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: "20px", width: "100%" }}>
-                  {/* 상단: 모드 선택 버튼 */}
-                  <div style={{ display: "flex", gap: "10px" }}>
-                    <button 
-                      onClick={() => setPreviewMode("general")}
-                      style={{ 
-                        padding: "5px 10px", 
-                        background: previewMode === "general" ? "#0072ff" : "#ccc", 
-                        color: "#fff", 
-                        border: "none", 
-                        borderRadius: "4px" 
-                      }}
-                    >
-                      일반
-                    </button>
-                    <button 
-                      onClick={() => setPreviewMode("uiCustom")}
-                      style={{ 
-                        padding: "5px 10px", 
-                        background: previewMode === "uiCustom" ? "#0072ff" : "#ccc", 
-                        color: "#fff", 
-                        border: "none", 
-                        borderRadius: "4px" 
-                      }}
-                    >
-                      UI 커스텀
-                    </button>
-                  </div>
-
-                  {/* 중앙: 과목명 표시 (볼드, 크게) */}
-                  <h2 style={{ fontWeight: "bold", fontSize: "1.2em", margin: "0" }}>
-                    {savedCourseName ? `과목명: ${savedCourseName}` : "과목명을 입력해주세요."}
-                  </h2>
-                  
-                  <div style={{ width: "1280px", height: "546px", border: "1px solid #ccc", display: "flex" }}>
-  {/* 왼쪽 영역: 텍스트 정보 (25%) */}
-      <div
-      style={{
-        width: "25%",
-        height: "100%",
-        borderRight: "2px solid #ccc",
-        padding: "10px",
-        boxSizing: "border-box",
-        backgroundColor: "#f9f9f9"
-      }}
-    >
-      {/* 트리 구조: 차시와 페이지 목록 */}
-      <ul style={{ listStyle: "none", paddingLeft: "0", margin: "0" }}>
-        {lessons.map(lesson => (
-          <li key={lesson.id} style={{ marginBottom: "15px" }}>
-            <div style={{ fontWeight: "bold", fontSize: "1.2em", marginBottom: "5px" }}>
-              {lesson.name}
-            </div>
-            {lesson.pages && lesson.pages.length > 0 && (
-              <ul style={{ listStyle: "disc", paddingLeft: "20px", margin: "0" }}>
-                {lesson.pages.map(page => (
-                  <li key={page.id} style={{ fontSize: "1em", marginBottom: "3px" }}>
-                    {page.name}
-                  </li>
-                ))}
-              </ul>
-            )}
-          </li>
-        ))}
-      </ul>
-    </div>
-
-
-  {/* 오른쪽 영역: 미리보기 영역 (75%) */}
-  <div
-    className="preview-section"
-    style={{
-      width: "75%",
-      height: "100%",
-      position: "relative",
-      overflow: "hidden",
-      backgroundSize: "cover",
-      backgroundPosition: "center",
-      backgroundImage: bgUrl ? `url(${bgUrl})` : "none"
-    }}
-    onDrop={handlePreviewDrop}
-    onDragOver={handlePreviewDragOver}
-    onDragLeave={handlePreviewDragLeave}
-    onMouseMove={handlePreviewMouseMove}
-    onMouseUp={handlePreviewMouseUp}
-  >
-    {previewItems.length === 0 ? (
-      <div
-        style={{
-          width: "100%",
-          height: "100%",
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          color: "#999"
-        }}
-      >
-        라이브러리 또는 UI요소를 드래그하세요.
-      </div>
-    ) : (
-      previewItems.map((item, idx) => (
-        <div
-          key={idx}
-          className="preview-item"
-          style={{ position: "absolute", left: item.x, top: item.y, cursor: "move" }}
-          onMouseDown={(e) => handleMouseDownItem(e, idx)}
-        >
-          {renderPreviewItem(item, idx)}
-        </div>
-      ))
-    )}
-  </div>
-</div>
-
-
-                  {/* UI 요소 (previewMode가 "uiCustom"일 경우, 가로 정렬) */}
-                  {previewMode === "uiCustom" && (
-                    <div 
-                      className="ui-elements-container" 
-                      style={{ display: "flex", flexDirection: "row", gap: "10px", justifyContent: "center" }}
-                    >
-                      {uiElements.map((elem, idx) => (
-                        <div
-                          key={idx}
-                          className="ui-element-tag"
-                          draggable
-                          onDragStart={(e) => handleUiElementDragStart(e, elem)}
-                          title={elem.name}
-                          style={{ cursor: "move" }}
-                        >
-                          <elem.icon style={{ fontSize: "1.5em" }} />
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-
-
-
-          </div>
-        </div>
     
         {/* 템플릿 검색 모달 (현재 미구현) */}
-        {showTemplateModal && (
-          <div className="import-modal-overlay">
-            <div className="import-modal-content">
-              <h3>템플릿 검색</h3>
-              <p>템플릿을 검색할 수 있는 UI를 구성하세요.</p>
-              <button className="close-button" onClick={handleCloseTemplateModal} style={{ marginTop: "10px" }}>
-                닫기
-              </button>
-            </div>
-          </div>
+                {showTemplateModal && (
+          <TemplateModal onClose={handleCloseTemplateModal} />
         )}
     
         {/* Import 모달 (현재 미구현) */}
-        {showImportModal && (
-          <div className="import-modal-overlay">
-            <div className="import-modal-content">
-              <h3>압축파일 Import</h3>
-              <input type="file" accept=".zip,.rar,.7z" onChange={handleImportFile} />
-              <button className="close-button" onClick={handleCloseImportModal}>
-                닫기
-              </button>
-            </div>
-          </div>
+                {showImportModal && (
+          <ImportModal onClose={handleCloseImportModal} onImport={handleImportFile} />
         )}
     
         {/* 속성 편집 모달 */}
-        {showPropModal && (
-          <div className="import-modal-overlay">
-            <div className="import-modal-content">
-              <h3>UI 요소 속성 편집</h3>
-              <p>이름(버튼명, 체크박스라벨 등)을 수정할 수 있습니다.</p>
-              <input
-                type="text"
-                value={editValue}
-                onChange={(e) => setEditValue(e.target.value)}
-              />
-              <div style={{ marginTop: "10px", textAlign: "right" }}>
-                <button className="save-button" onClick={handlePropSave}>
-                  저장
-                </button>
-                <button className="close-button" onClick={closePropModal} style={{ marginLeft: "10px" }}>
-                  닫기
-                </button>
-              </div>
-            </div>
-          </div>
+                {showPropModal && (
+          <PropModal value={editValue} onChange={setEditValue} onSave={handlePropSave} onClose={closePropModal} />
         )}
       </div>
     );    
