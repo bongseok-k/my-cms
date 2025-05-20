@@ -46,7 +46,7 @@ function ContentBuilderPage() {
     const [currentLessonId, setCurrentLessonId] = useState(1);
     const [currentPageId, setCurrentPageId] = useState(1);
     const [newLessonName, setNewLessonName] = useState("");
-    const [newPageName, setPageName] = useState("");
+    const [newPageName, setNewPageName] = useState("");
 
     const currentLesson = lessons.find(l => l.id === currentLessonId) || lessons[0];
     const currentPage = currentLesson.pages.find(p => p.id === currentPageId) || currentLesson.pages[0];
@@ -369,7 +369,7 @@ function ContentBuilderPage() {
             })
         );
         setCurrentPageId(currentLesson.pages.length + 1);
-        setPageName("");
+        setNewPageName("");
     };
 
 
@@ -588,7 +588,7 @@ function ContentBuilderPage() {
             type="text"
             placeholder="페이지명 입력 (미입력 시 자동생성)"
             value={newPageName}
-            onChange={(e) => setPageName(e.target.value)}
+            onChange={(e) => setNewPageName(e.target.value)}
             className="management-input long-input"
           />
           <button
